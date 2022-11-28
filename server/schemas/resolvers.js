@@ -1,4 +1,4 @@
-const { User, Campaign } = require('../models');
+const { User, Campaign, Location } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 const resolvers = {
@@ -34,11 +34,21 @@ const resolvers = {
         deleteCampaign: async () => {
 
         },
-        createLocation: async () => {
-
+        createLocation: async (parents, args) => {
+            const location = await Location.create(args);
+            return location;
         },
-        editLocation: async () => {
-
+        editLocation: async (parent, {locationId, locationName, locationDescription}, context) => {
+            const location = await Location.findOneAndUpdate(
+                { _id: locationId },
+                {
+                    $set: { name: locationName, description: locationDescription }
+                },
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            )
         },
         deleteLocation: async () => {
 
