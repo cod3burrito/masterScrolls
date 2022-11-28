@@ -15,7 +15,7 @@ const resolvers = {
             return Campaign.findById(args.id).populate('location').populate('characters')
         },
     },
-    Mutations: {
+    Mutation: {
         login: async () => {
 
         },
