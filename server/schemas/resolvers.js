@@ -46,13 +46,7 @@ const resolvers = {
                 { $push: { campaigns: newCampaign._id } },
                 { new: true }
             )
-            //old version
-            // const newCampaign = await Campaign.create({ name, plot })
-            //option for adding in the default location
-            // const updatedCampaign = await Campaign.findByIdAndUpdate(
-            //     { _id: newCampaign._id },
-            //     { $push: { locations: defaultLocation._id } }
-            // )
+
             return newCampaign
             // }
         },
@@ -67,32 +61,33 @@ const resolvers = {
             // }
 
         },
-        deleteCampaign: async (parents, { campaignId }, context) => {
+        deleteCampaign: async (parents, { userId, campaignId }, context) => {
             // if (context.user) {
             const deletedCampaign = await Campaign.findByIdAndDelete(
                 { _id: campaignId }
             )
             const updatedUser = await User.findByIdAndUpdate(
-                { _id: context.user._id },
+                // { _id: context.user._id },
+                { _id: userId },
                 { $pull: { campaigns: campaignId } }
             )
             return { deletedCampaign, updatedUser }
             // }
 
         },
-        createLocation: async (parents, {campaignId, name, details}, context) => {
+        createLocation: async (parents, { campaignId, name, details }, context) => {
             if (context.user) {
-                const newLocation = await Location.create({name, details});
+                const newLocation = await Location.create({ name, details });
                 const updateCampaign = await Campaign.findByIdAndUpdate(
                     { _id: campaignId },
-                    { $push: { location: newLocation._id}}
+                    { $push: { location: newLocation._id } }
                 )
-                return {newLocation, updateCampaign};
+                return { newLocation, updateCampaign };
             }
         },
-        editLocation: async (parent, {locationId, name, details}, context) => {
-            if (context.user) {  
-                const updateLocation = await Location.findByIdAndUpdate( 
+        editLocation: async (parent, { locationId, name, details }, context) => {
+            if (context.user) {
+                const updateLocation = await Location.findByIdAndUpdate(
                     { _id: locationId },
                     {
                         $set: { name: name, details: details }
@@ -102,7 +97,7 @@ const resolvers = {
             }
         },
         deleteLocation: async (parents, { campaignId, locationId }, context) => {
-            if (context.user){
+            if (context.user) {
                 const deleteLocation = await Location.findByIdAndDelete(
                     { _id: locationId }
                 )
@@ -110,7 +105,7 @@ const resolvers = {
                     { _id: campaignId },
                     { $pull: { locations: locationId } }
                 )
-                return {deleteLocation, updatedCampaign}
+                return { deleteLocation, updatedCampaign }
             }
         },
         createCharacter: async () => {
