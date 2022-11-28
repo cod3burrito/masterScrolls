@@ -16,15 +16,19 @@ const resolvers = {
         },
     },
     Mutation: {
-        login: async () => {
+        login: async (parent, { email, password }) => {
+            const user = await User.findOne({ email });
 
+            if (!user) {
+                throw new AuthenticationError('You have not joined the ranks with these credentials! Please verify your identity or query the council for membership to our guild.')
+            }
         },
-        createUser: async () => {
-
+        createUser: async (parent, { username, email, password }) => {
+            return await User.create({ username, email, password }) 
         },
-        deleteUser: async () => {
-
-        },
+        deleteUser: async (parent, { userId }) => {
+            return User.findOneAndDelete({ _id: userId }); 
+        }, 
         createCampaign: async (parents, { name, plot }, context) => {
             if (context.user) {
                 const newCampaign = await Campaign.create({ name, plot })
