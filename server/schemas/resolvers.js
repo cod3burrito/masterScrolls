@@ -58,10 +58,14 @@ const resolvers = {
             }
 
         },
-        createLocation: async (parents, args) => {
-            const location = await Location.create(args);
-            return location;
-        },
+        createLocation: async (parents, {locationName, locationDescription}, context) => {
+            if (context.user) {
+                const newLocation = await Location.create({locationName, locationDescription});
+                const updateCampaign = await Campaign.findByIdAndUpdate(
+                    { _id: }
+                )
+                return {newLocation, updateCampaign};
+            },
         editLocation: async (parent, {locationId, locationName, locationDescription}, context) => {
             const location = await Location.findOneAndUpdate(
                 { _id: locationId },
