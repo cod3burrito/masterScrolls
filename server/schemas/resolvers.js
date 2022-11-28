@@ -62,32 +62,37 @@ const resolvers = {
             }
 
         },
-        createLocation: async (parents, {locationName, locationDescription}, context) => {
+        createLocation: async (parents, {campaignId, name, details}, context) => {
             if (context.user) {
-                const newLocation = await Location.create({locationName, locationDescription});
+                const newLocation = await Location.create({name, details});
                 const updateCampaign = await Campaign.findByIdAndUpdate(
-                    { _id: context.user._id},
+                    { _id: campaignId },
                     { $push: { location: newLocation._id}}
                 )
                 return {newLocation, updateCampaign};
             }
         },
-        editLocation: async (parent, {locationId, locationName, locationDescription}, context) => {
+        editLocation: async (parent, {locationId, name, details}, context) => {
             if (context.user) {  
                 const updateLocation = await Location.findByIdAndUpdate( 
                     { _id: locationId },
                     {
-                        $set: { name: locationName, description: locationDescription }
+                        $set: { name: name, details: details }
                     },
                 )
                 return updateLocation
             }
         },
-        deleteLocation: async (parents, { locationId }, context) => {
+        deleteLocation: async (parents, { campaignId, locationId }, context) => {
             if (context.user){
                 const deleteLocation = await Location.findByIdAndDelete(
-                    { _id: context.user._id }
+                    { _id: locationId }
                 )
+                const updatedCampaign = await User.findByIdAndUpdate(
+                    { _id: campaignId },
+                    { $pull: { locations: locationId } }
+                )
+                return {deleteLocation, updatedCampaign}
             }
         },
         createCharacter: async () => {
