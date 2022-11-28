@@ -1,5 +1,5 @@
 const {Schema, model, Types} = require('mongoose')
-const LocationSchema = require('./Character')
+const characterSchema = require('./Character')
 
 const LocationSchema = new Schema(
     {

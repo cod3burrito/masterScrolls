@@ -9,7 +9,7 @@ const resolvers = {
 
         },
     },
-    Mutations: {
+    Mutation: {
         createUser: async () => {
 
         },
