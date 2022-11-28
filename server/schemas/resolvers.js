@@ -25,8 +25,15 @@ const resolvers = {
         deleteUser: async () => {
 
         },
-        createCampaign: async () => {
-
+        createCampaign: async (parents, { name, plot }, context) => {
+            if (context.user) {
+                const newCampaign = Campaign.create({ name, plot })
+                const updatedUser = User.findByIdAndUpdate(
+                    { _id: context.user._id },
+                    { $push: { campaigns: newCampaign._id } }
+                )
+                return { newCampaign, updatedUser }
+            }
         },
         editCampaign: async () => {
 
