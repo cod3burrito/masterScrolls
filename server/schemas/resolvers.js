@@ -23,13 +23,11 @@ const resolvers = {
                 throw new AuthenticationError('You have not joined the ranks with these credentials! Please verify your identity or query the council for membership to our guild.')
             }
         },
-        createUser: async (parent, { user }) => {
-            const user = await User.create{( username, email, password, )},
-            const token = signToken(user),
-            return User.create({ token, user }), 
+        createUser: async (parent, { username, email, password }) => {
+            return await User.create({ username, email, password }) 
         },
-        deleteUser: async (parent, { user }) => {
-            return User.findOneAndDelete({ user: userName }); 
+        deleteUser: async (parent, { userId }) => {
+            return User.findOneAndDelete({ _id: userId }); 
         }, 
         createCampaign: async (parents, { name, plot }, context) => {
             if (context.user) {
