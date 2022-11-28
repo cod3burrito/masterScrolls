@@ -8,6 +8,8 @@ const CampaignSchema = new Schema(
         },
         plot: {
             type: String,
+            default: ''
+            //empty string so we have no error with people leaving it empty
         },
         public: {
             type: Boolean,
