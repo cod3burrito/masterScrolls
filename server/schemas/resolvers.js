@@ -19,9 +19,6 @@ const resolvers = {
         login: async () => {
 
         },
-        logout: async () => {
-
-        },
         createUser: async () => {
 
         },
