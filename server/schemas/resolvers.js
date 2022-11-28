@@ -1,4 +1,4 @@
-const { User, Campaign } = require('../models');
+const { User, Campaign, Location } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 const resolvers = {
@@ -62,14 +62,38 @@ const resolvers = {
             }
 
         },
-        createLocation: async () => {
-
+        createLocation: async (parents, {campaignId, name, details}, context) => {
+            if (context.user) {
+                const newLocation = await Location.create({name, details});
+                const updateCampaign = await Campaign.findByIdAndUpdate(
+                    { _id: campaignId },
+                    { $push: { location: newLocation._id}}
+                )
+                return {newLocation, updateCampaign};
+            }
         },
-        editLocation: async () => {
-
+        editLocation: async (parent, {locationId, name, details}, context) => {
+            if (context.user) {  
+                const updateLocation = await Location.findByIdAndUpdate( 
+                    { _id: locationId },
+                    {
+                        $set: { name: name, details: details }
+                    },
+                )
+                return updateLocation
+            }
         },
-        deleteLocation: async () => {
-
+        deleteLocation: async (parents, { campaignId, locationId }, context) => {
+            if (context.user){
+                const deleteLocation = await Location.findByIdAndDelete(
+                    { _id: locationId }
+                )
+                const updatedCampaign = await User.findByIdAndUpdate(
+                    { _id: campaignId },
+                    { $pull: { locations: locationId } }
+                )
+                return {deleteLocation, updatedCampaign}
+            }
         },
         createCharacter: async () => {
 
