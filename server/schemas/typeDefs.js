@@ -35,7 +35,7 @@ const typeDefs = gql`
     }
 
     type Query{
-        getUser: User
+        getUser(id:ID!): User
         getCampaign: [Campaign]
     }
 
@@ -44,7 +44,7 @@ const typeDefs = gql`
         deleteUser(userId: ID!): User
         createCampaign(name: String!, plot: String): Campaign
         editCampaign(campaignId: ID!, name: String, plot: String): Campaign
-        deleteCampaign(campaignId: ID!): Campaign
+        deleteCampaign(userId:ID!,campaignId: ID!): Campaign
         createLocation(campaignId: ID!, name: String!, details: String): Location
         editLocation(campaignId: ID!, locationId: ID!, name: String, details: String): Location
         deleteLocation(campaignId: ID!, locationId: ID!): Location
