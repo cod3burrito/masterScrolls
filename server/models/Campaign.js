@@ -16,7 +16,12 @@ const CampaignSchema = new Schema(
             default: false
             //false means that its private
         },
-        locations: [LocationSchema],
+        locations: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Location"
+            }
+        ],
     }
 )
 
