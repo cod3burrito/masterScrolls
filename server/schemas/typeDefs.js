@@ -45,12 +45,12 @@ const typeDefs = gql`
         createCampaign(name: String!, plot: String): Campaign
         editCampaign(_id: ID!, name: String, plot: String): Campaign
         deleteCampaign(_id: ID!): Campaign
-        createLocation(name: String!, details: String): Location
-        editLocation(_id: ID!, name: String, details: String): Location
-        deleteLocation(_id: ID!): Location
-        createCharacter(name: String!, class: String, level: Int, goals: String, personality: String): Character
-        editCharacter(_id: ID!, name: String, class: String, level: Int, goals: String, personality: String, allies: [String], notes: [String]): Character
-        deleteCharacter(_id: ID!): Character
+        createLocation(_id: ID!, name: String!, details: String): Location
+        editLocation(_id: ID!, locationId: ID!, name: String, details: String): Location
+        deleteLocation(_id: ID!, locationId: ID!): Location
+        createCharacter(_id: ID!, locationId: ID!, name: String!, class: String, level: Int, goals: String, personality: String): Character
+        editCharacter(_id: ID!, locationId: ID!, characterId: ID!, name: String, class: String, level: Int, goals: String, personality: String, allies: [String], notes: [String]): Character
+        deleteCharacter(_id: ID!, locationId: ID!, characterId: ID!): Character
         login(username: String!, password: String!): User
     }
 `;
