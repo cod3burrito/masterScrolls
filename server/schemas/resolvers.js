@@ -1,4 +1,4 @@
-const { User, Campaign } = require('../models');
+const { User, Campaign, Location, Character } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 const resolvers = {
@@ -72,7 +72,7 @@ const resolvers = {
 
         },
         createCharacter: async (parent, args) => {
-            const { campaignId, locationId, name } = args;
+            const { locationId, name } = args;
             const newCharacter = {
                 name: name
             }
@@ -93,13 +93,18 @@ const resolvers = {
                 newCharacter.personality = args.personality;
             }
 
-            Campaign.findByIdAndUpdate(campaignId, {})
-        },
-        editCharacter: async () => {
+            const createdCharacter = await Character.create(newCharacter);
+            await Location.findByIdAndUpdate(locationId, {$push: {characters: createdCharacter._id}})
 
+            return createdCharacter
         },
-        deleteCharacter: async () => {
-
+        editCharacter: async (parents, args) => {
+            const updatedCharacter = await Character.findByIdAndUpdate(args.characterId, args, {new: true});
+            return updatedCharacter
+        },
+        deleteCharacter: async ( parents, {locationId, characterId} ) => {
+            const deletedCharacter = await Character.findByIdAndDelete({_id: characterId});
+            await Location.findByIdAndUpdate(locationId, {$pull: {characters: characterId} })
         }
     },
 
