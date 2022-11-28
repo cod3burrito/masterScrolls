@@ -66,24 +66,29 @@ const resolvers = {
             if (context.user) {
                 const newLocation = await Location.create({locationName, locationDescription});
                 const updateCampaign = await Campaign.findByIdAndUpdate(
-                    { _id: }
+                    { _id: context.user._id},
+                    { $push: { location: newLocation._id}}
                 )
                 return {newLocation, updateCampaign};
-            },
-        editLocation: async (parent, {locationId, locationName, locationDescription}, context) => {
-            const location = await Location.findOneAndUpdate(
-                { _id: locationId },
-                {
-                    $set: { name: locationName, description: locationDescription }
-                },
-                {
-                    new: true,
-                    runValidators: true,
-                }
-            )
+            }
         },
-        deleteLocation: async () => {
-
+        editLocation: async (parent, {locationId, locationName, locationDescription}, context) => {
+            if (context.user) {  
+                const updateLocation = await Location.findByIdAndUpdate( 
+                    { _id: locationId },
+                    {
+                        $set: { name: locationName, description: locationDescription }
+                    },
+                )
+                return updateLocation
+            }
+        },
+        deleteLocation: async (parents, { locationId }, context) => {
+            if (context.user){
+                const deleteLocation = await Location.findByIdAndDelete(
+                    { _id: context.user._id }
+                )
+            }
         },
         createCharacter: async () => {
 
