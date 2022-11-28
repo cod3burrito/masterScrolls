@@ -12,14 +12,14 @@ const typeDefs = gql`
         _id: ID
         name: String
         plot: String
-        locations: [Location]
+        locations: [ID]
     }
 
     type Location {
         _id: ID
         name: String
         details: String
-        characters: [Character]
+        characters: [ID]
     }
 
     type Character {
@@ -42,7 +42,7 @@ const typeDefs = gql`
     type Mutation {
         createUser(username: String!, email: String!, password: String!): User
         deleteUser(userId: ID!): User
-        createCampaign(name: String!, plot: String): Campaign
+        createCampaign(userId: ID, name: String!, plot: String): Campaign
         editCampaign(campaignId: ID!, name: String, plot: String): Campaign
         deleteCampaign(userId:ID!,campaignId: ID!): Campaign
         createLocation(campaignId: ID!, name: String!, details: String): Location

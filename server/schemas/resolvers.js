@@ -14,7 +14,7 @@ const resolvers = {
         },
         //find a single campaign, irrespective of the user
         getCampaign: async (parent, args) => {
-            return Campaign.findById(args.id).populate('location').populate('characters')
+            return Campaign.findById(args.id)
         },
     },
     Mutation: {
@@ -142,6 +142,8 @@ const resolvers = {
         deleteCharacter: async ( parents, {locationId, characterId} ) => {
             const deletedCharacter = await Character.findByIdAndDelete({_id: characterId});
             await Location.findByIdAndUpdate(locationId, {$pull: {characters: characterId} })
+
+            return deletedCharacter;
         }
     },
 
