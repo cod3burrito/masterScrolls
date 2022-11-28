@@ -42,15 +42,15 @@ const typeDefs = gql`
     type Mutation {
         createUser(username: String!, email: String!, password: String!): User
         deleteUser(userId: ID!): User
-        createCampaign(name: String!, plot: String): Campaign
+        createCampaign(userId: ID, name: String!, plot: String): Campaign
         editCampaign(campaignId: ID!, name: String, plot: String): Campaign
         deleteCampaign(userId:ID!,campaignId: ID!): Campaign
         createLocation(campaignId: ID!, name: String!, details: String): Location
         editLocation(campaignId: ID!, locationId: ID!, name: String, details: String): Location
         deleteLocation(campaignId: ID!, locationId: ID!): Location
-        createCharacter(campaignId: ID!, locationId: ID!, name: String!, class: String, level: Int, goals: String, personality: String): Character
-        editCharacter(campaignId: ID!, locationId: ID!, characterId: ID!, name: String, class: String, level: Int, goals: String, personality: String, allies: [String], notes: [String]): Character
-        deleteCharacter(campaignId: ID!, locationId: ID!, characterId: ID!): Character
+        createCharacter(locationId: ID!, name: String!, class: String, level: Int, goals: String, personality: String): Character
+        editCharacter(characterId: ID!, name: String, class: String, level: Int, goals: String, personality: String, allies: [String], notes: [String]): Character
+        deleteCharacter(locationId: ID!, characterId: ID!): Character
         login(username: String!, password: String!): User
     }
 `;

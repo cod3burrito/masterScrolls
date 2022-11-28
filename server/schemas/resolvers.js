@@ -14,7 +14,7 @@ const resolvers = {
         },
         //find a single campaign, irrespective of the user
         getCampaign: async (parent, args) => {
-            return Campaign.findById(args.id).populate('location').populate('characters')
+            return Campaign.findById(args.id)
         },
     },
     Mutation: {
@@ -108,14 +108,42 @@ const resolvers = {
                 return { deleteLocation, updatedCampaign }
             }
         },
-        createCharacter: async () => {
+        createCharacter: async (parent, args) => {
+            const { locationId, name } = args;
+            const newCharacter = {
+                name: name
+            }
 
+            if(args.class){
+                newCharacter.class = args.class;
+            }
+
+            if(args.level){
+                newCharacter.level = args.level;
+            }
+
+            if(args.goals){
+                newCharacter.goals = args.goals;
+            }
+
+            if(args.personality){
+                newCharacter.personality = args.personality;
+            }
+
+            const createdCharacter = await Character.create(newCharacter);
+            await Location.findByIdAndUpdate(locationId, {$push: {characters: createdCharacter._id}})
+
+            return createdCharacter
         },
-        editCharacter: async () => {
-
+        editCharacter: async (parents, args) => {
+            const updatedCharacter = await Character.findByIdAndUpdate(args.characterId, args, {new: true});
+            return updatedCharacter
         },
-        deleteCharacter: async () => {
+        deleteCharacter: async ( parents, {locationId, characterId} ) => {
+            const deletedCharacter = await Character.findByIdAndDelete({_id: characterId});
+            await Location.findByIdAndUpdate(locationId, {$pull: {characters: characterId} })
 
+            return deletedCharacter;
         }
     },
 
