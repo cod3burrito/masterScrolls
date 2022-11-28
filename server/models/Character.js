@@ -1,6 +1,6 @@
 const { Schema, model, Types } = require('mongoose')
 
-const characterSchema = new Schema(
+const CharacterSchema = new Schema(
     {
         characterId: {
             type: Schema.Types.ObjectId,
@@ -41,4 +41,6 @@ const characterSchema = new Schema(
     }
 )
 
-module.exports = characterSchema
+const Character = model('Character', CharacterSchema)
+
+module.exports = Character
