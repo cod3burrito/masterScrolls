@@ -27,18 +27,31 @@ const resolvers = {
         },
         createCampaign: async (parents, { name, plot }, context) => {
             if (context.user) {
-                const newCampaign = Campaign.create({ name, plot })
-                const updatedUser = User.findByIdAndUpdate(
+                const newCampaign = await Campaign.create({ name, plot })
+                const updatedUser = await User.findByIdAndUpdate(
                     { _id: context.user._id },
                     { $push: { campaigns: newCampaign._id } }
                 )
                 return { newCampaign, updatedUser }
             }
         },
-        editCampaign: async () => {
+        editCampaign: async (parents, { campaignId, name, plot }, context) => {
+            if (context.user) {
+                const updatedCampaign = await Campaign.findByIdAndUpdate(
+                    { _id: campaignId },
+                    { $set: { name: name, plot: plot } }
+                )
+                return updatedCampaign
+            }
 
         },
-        deleteCampaign: async () => {
+        deleteCampaign: async (parents, { campaignId }, context) => {
+            if (context.user) {
+                const deletedCampaign = await Campaign.findByIdAndDelete(
+                    { _id: campaignId }
+                )
+                return deletedCampaign
+            }
 
         },
         createLocation: async () => {
