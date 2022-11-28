@@ -43,8 +43,29 @@ const resolvers = {
         deleteLocation: async () => {
 
         },
-        createCharacter: async () => {
+        createCharacter: async (parent, args) => {
+            const { campaignId, locationId, name } = args;
+            const newCharacter = {
+                name: name
+            }
 
+            if(args.class){
+                newCharacter.class = args.class;
+            }
+
+            if(args.level){
+                newCharacter.level = args.level;
+            }
+
+            if(args.goals){
+                newCharacter.goals = args.goals;
+            }
+
+            if(args.personality){
+                newCharacter.personality = args.personality;
+            }
+
+            Campaign.findByIdAndUpdate(campaignId, {})
         },
         editCharacter: async () => {
 
