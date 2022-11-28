@@ -1,5 +1,4 @@
-const {Schema, model, Types} = require('mongoose')
-const characterSchema = require('./Character')
+const { Schema, model, Types } = require('mongoose')
 
 const LocationSchema = new Schema(
     {
@@ -15,8 +14,15 @@ const LocationSchema = new Schema(
             type: String,
             required: true
         },
-        characters: [characterSchema],
+        characters: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Character"
+            }
+        ],
     }
 )
 
-module.exports = LocationSchema
+const Location = model('Location', LocationSchema)
+
+module.exports = Location
