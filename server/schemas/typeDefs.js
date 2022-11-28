@@ -12,14 +12,14 @@ const typeDefs = gql`
         _id: ID
         name: String
         plot: String
-        locations: [Location]
+        locations: [ID]
     }
 
     type Location {
         _id: ID
         name: String
         details: String
-        characters: [Character]
+        characters: [ID]
     }
 
     type Character {
