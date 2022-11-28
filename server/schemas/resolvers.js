@@ -50,7 +50,11 @@ const resolvers = {
                 const deletedCampaign = await Campaign.findByIdAndDelete(
                     { _id: campaignId }
                 )
-                return deletedCampaign
+                const updatedUser = await User.findByIdAndUpdate(
+                    { _id: context.user._id },
+                    { $pull: { campaigns: campaignId } }
+                )
+                return { deletedCampaign, updatedUser }
             }
 
         },
