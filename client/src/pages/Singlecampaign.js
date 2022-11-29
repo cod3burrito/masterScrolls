@@ -11,8 +11,6 @@ const SingleCampaign = () => {
         {
             variables: { campaignId: campaignParam },
         });
-    console.log(loading)
-    console.log(data)
     // const campaignObject = data?.getCampaign || [];
     const campaign = data?.getCampaign || [];
     console.log(campaign);
@@ -21,8 +19,8 @@ const SingleCampaign = () => {
     }
     return (
         <div className="campaign">
-            <h1> Hello</h1>
             <h1>{campaign.name}</h1>
+
             {/* <LocationList {...campaign}/> */}
         </div>
     )
