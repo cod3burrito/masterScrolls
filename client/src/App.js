@@ -13,6 +13,7 @@ import Signup from './pages/Signup';
 import Campaigns from './pages/Campaigns';
 //components
 import Navbar from './components/Navbar'
+import SingleCampaign from './pages/SingleCampaign';
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('id_token');
@@ -25,7 +26,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = createHttpLink({
-  uri: 'graphql',
+  uri: '/graphql',
 });
 
 const client = new ApolloClient({
@@ -38,14 +39,14 @@ function App() {
   const [user, setUser] = useReducer(reducer, {});
 
   return (
-    <ApolloProvider client={client}>      
+    <ApolloProvider client={client}>
       <UserContext.Provider value={{user, setUser}}>
-        <Navbar />
         <Routes>
           <Route path="/" index element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/campaigns" element={<Campaigns />} />
+          <Route path="/campaign/:campaignId" element={<SingleCampaign />} />
         </Routes>
       </UserContext.Provider>
     </ApolloProvider>
