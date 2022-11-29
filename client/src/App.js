@@ -41,7 +41,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/campaigns" element={<Campaigns />} />
-        <Route path="/campaign/:campaignId" element={<SingleCampaign />} /> 
+        <Route path="/campaign/:campaignId" element={<SingleCampaign />} />
       </Routes>
 
     </ApolloProvider>

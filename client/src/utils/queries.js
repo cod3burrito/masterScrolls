@@ -19,7 +19,6 @@ export const QUERY_GETCAMPAIGN = gql`
 query GetCampaign($getCampaignId: ID!) {
     getCampaign(id: $getCampaignId) {
       _id
-      
       name
       plot
       locations {
@@ -40,4 +39,4 @@ query GetCampaign($getCampaignId: ID!) {
       }
     }
   }
-`
+`;

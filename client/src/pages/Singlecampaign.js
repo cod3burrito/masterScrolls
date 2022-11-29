@@ -5,16 +5,24 @@ import { useParams } from 'react-router-dom';
 
 const SingleCampaign = () => {
     const { campaignId } = useParams();
-    const { loading, data } = useQuery(QUERY_GETCAMPAIGN, {variables: {_id: campaignId}});
+    console.log(campaignId)
+    const { loading, data } = useQuery(
+        QUERY_GETCAMPAIGN,
+        {
+            variables: { id: campaignId },
+        });
+
     console.log(data)
-    const campaign = data?.campaign || [];
-// console.log(campaign);
-    if(loading){
+    const campaignObj = data?.GetCampaign || [];
+    // const campaign = data?.campaign || [];
+    console.log(campaignObj);
+    if (loading) {
         return <div>Loading...</div>;
     }
-    return(
+    return (
         <div className="campaign">
-            <h1>{campaign.name}</h1>
+            <h1> Hello</h1>
+            <h1>{campaignObj.name}</h1>
             {/* <LocationList {...campaign}/> */}
         </div>
     )
