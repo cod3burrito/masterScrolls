@@ -9,15 +9,7 @@ const resolvers = {
             // return User.findOne({ _id: context.user._id }).populate('campaign').populate('location').populate('characters')
             // }
             // throw new AuthenticationError('you must be logged in!')
-            return User.findOne({ _id: args.id }).populate({
-                path: 'campaigns',
-                populate: {
-                    path: 'locations',
-                    populate: {
-                        path: 'characters'
-                    }
-                }
-            })
+            return User.findOne({ _id: args.id }).populate({path: 'campaigns'})
 
         },
         //find a single campaign, irrespective of the user
