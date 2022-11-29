@@ -3,13 +3,14 @@ import './App.css';
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client'
 import { Routes, Route } from 'react-router-dom'
 import { setContext } from '@apollo/client/link/context'
+import UserProvider from './utils/UserContext';
 //pages
 import Home from './pages/Home'
-//components
-import Navbar from './components/Navbar'
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Campaigns from './pages/Campaigns';
+//components
+import Navbar from './components/Navbar'
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('id_token');
@@ -33,15 +34,15 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-
       <Navbar />
-      <Routes>
-        <Route path="/" index element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/campaigns" element={<Campaigns />} />
-      </Routes>
-
+      <UserProvider>
+        <Routes>
+          <Route path="/" index element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/campaigns" element={<Campaigns />} />
+        </Routes>
+      </UserProvider>
     </ApolloProvider>
   );
 }
