@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { QUERY_GETCAMPAIGN } from '../utils/queries'
 import { useParams } from 'react-router-dom';
-
+import LocationList from '../components/LocationList';
 const SingleCampaign = () => {
     const { campaignId: campaignParam } = useParams();
 
@@ -20,8 +20,7 @@ const SingleCampaign = () => {
     return (
         <div className="campaign">
             <h1>{campaign.name}</h1>
-
-            {/* <LocationList {...campaign}/> */}
+            <LocationList locations={campaign.locations} />
         </div>
     )
 }
