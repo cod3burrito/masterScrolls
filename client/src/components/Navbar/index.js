@@ -10,6 +10,9 @@ const Navbar = () => {
                     <div id='navbarNav' style={{ marginLeft: "auto" }}>
                         <ul className="navbar-nav">
                             {/* space for other links */}
+                            (<li className="nav-item">
+                                <Link className="nav-link" to="/campaigns">Campaign Library</Link>
+                            </li>)
                             {Auth.loggedIn() ?
                                 (<li className="nav-item ">
                                     <Link onClick={Auth.logout} className="nav-link" to="/">Logout</Link>
