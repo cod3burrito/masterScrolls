@@ -31,15 +31,25 @@ const resolvers = {
         },
     },
     Mutation: {
-        login: async (parent, { email, password }) => {
-            const user = await User.findOne({ email });
+        login: async (parent, { username, password }) => {
+            const user = await User.findOne({ username });
 
             if (!user) {
                 throw new AuthenticationError('You have not joined the ranks with these credentials! Please verify your identity or query the council for membership to our guild.')
             }
+
+            const correctPw = await user.isCorrectPassword(password)
+            if (!correctPw) {
+                throw new AuthenticationError('Incorrect password given')
+            }
+            const token = signToken(user)
+            return { token, user }
+
         },
         createUser: async (parent, { username, email, password }) => {
-            return await User.create({ username, email, password })
+            const user = await User.create({ username, email, password })
+            const token = signToken(user)
+            return { token, user }
         },
         deleteUser: async (parent, { userId }) => {
             return User.findOneAndDelete({ _id: userId });
@@ -127,34 +137,34 @@ const resolvers = {
                 name: name
             }
 
-            if(args.class){
+            if (args.class) {
                 newCharacter.class = args.class;
             }
 
-            if(args.level){
+            if (args.level) {
                 newCharacter.level = args.level;
             }
 
-            if(args.goals){
+            if (args.goals) {
                 newCharacter.goals = args.goals;
             }
 
-            if(args.personality){
+            if (args.personality) {
                 newCharacter.personality = args.personality;
             }
 
             const createdCharacter = await Character.create(newCharacter);
-            await Location.findByIdAndUpdate(locationId, {$push: {characters: createdCharacter._id}})
+            await Location.findByIdAndUpdate(locationId, { $push: { characters: createdCharacter._id } })
 
             return createdCharacter
         },
         editCharacter: async (parents, args) => {
-            const updatedCharacter = await Character.findByIdAndUpdate(args.characterId, args, {new: true});
+            const updatedCharacter = await Character.findByIdAndUpdate(args.characterId, args, { new: true });
             return updatedCharacter
         },
-        deleteCharacter: async ( parents, {locationId, characterId} ) => {
-            const deletedCharacter = await Character.findByIdAndDelete({_id: characterId});
-            await Location.findByIdAndUpdate(locationId, {$pull: {characters: characterId} })
+        deleteCharacter: async (parents, { locationId, characterId }) => {
+            const deletedCharacter = await Character.findByIdAndDelete({ _id: characterId });
+            await Location.findByIdAndUpdate(locationId, { $pull: { characters: characterId } })
 
             return deletedCharacter;
         }
