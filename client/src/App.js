@@ -10,6 +10,7 @@ import Navbar from './components/Navbar'
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Campaigns from './pages/Campaigns';
+import SingleCampaign from './pages/SingleCampaign';
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('id_token');
@@ -22,7 +23,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = createHttpLink({
-  uri: 'graphql',
+  uri: '/graphql',
 });
 
 const client = new ApolloClient({
@@ -40,6 +41,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/campaigns" element={<Campaigns />} />
+        <Route path="/campaign/:campaignId" element={<SingleCampaign />} />
       </Routes>
 
     </ApolloProvider>
