@@ -41,7 +41,7 @@ const typeDefs = gql`
       
     type Query{
         getUser(id:ID!): User
-        getCampaign(id:ID!): Campaign
+        getCampaign(campaignId:ID!): Campaign
     }
 
     type Mutation {
