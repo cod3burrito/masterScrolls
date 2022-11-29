@@ -2,10 +2,6 @@ const { Schema, model, Types } = require('mongoose')
 
 const LocationSchema = new Schema(
     {
-        locationId: {
-            type: Schema.Types.ObjectId,
-            default: () => new Types.ObjectId
-        },
         name: {
             type: String,
             required: true

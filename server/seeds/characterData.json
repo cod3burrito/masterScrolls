@@ -1,0 +1,99 @@
+[
+    {
+        "name": "Danny Fenton",
+        "alive": false,
+        "class": "necromancer",
+        "level": 14,
+        "goals": "be human again",
+        "personality": "angst teen",
+        "allies": [
+            "Sam",
+            "Tucker"
+        ],
+        "notes": [
+            "ghost boy",
+            "can go ghost"
+        ]
+    },
+    {
+        "name": "Sailor Moon",
+        "level": 20,
+        "allies": [
+            "Sailor Mars",
+            "Sailor Jupiter",
+            "Sailor Venus",
+            "Sailor Mercury"
+        ]
+    },
+    {
+        "name": "Frodo Baggins",
+        "alive": true,
+        "class": "bard"
+    },
+    {
+        "name": "Bowser",
+        "class": "Barbarian",
+        "personality": "Jack Black"
+    },
+    {
+        "name": "Chris Mario",
+        "class": "Warrior",
+        "goals": "Save princess peach"
+    },
+    {
+        "name": "Kirbo",
+        "class": "Paladin",
+        "notes": [
+            "a round boy",
+            "pink harbinger of doom"
+        ]
+    },
+    {
+        "name": "donkey kong"
+    },
+    {
+        "name": "Link"
+    },
+    {
+        "name": "samus"
+    },
+    {
+        "name": "yoshi"
+    },
+    {
+        "name": "Fox"
+    },
+    {
+        "name": "pikachu"
+    },
+    {
+        "name": "Luigi"
+    },
+    {
+        "name": "Ness"
+    },
+    {
+        "name": "Captain Falcon"
+    },
+    {
+        "name": "Jigglypuff"
+    },
+    {
+        "name": "Peach"
+    },
+    {
+        "name": "Ice climbers"
+    },
+    {
+        "name": "sheik"
+    },
+    {
+        "name": "zelda"
+    },
+    {
+        "name": "dr. mario"
+    },
+    {
+        "name": "pichu"
+    }
+]

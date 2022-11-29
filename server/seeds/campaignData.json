@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Dungeons and Daddies",
+        "plot": "Four dads flung into a land of high fantasy and magic must rescue their sons",
+        "public": false
+    },
+    {
+        "name": "Not Another DnD Podcast",
+        "plot": "It's the campaign after the campaign, the world has been saved but what now?",
+        "public": true
+    },
+    {
+        "name": "Fantasy High",
+        "plot": "It's a magic highschool what else did you expect",
+        "public": true
+    },
+    {
+        "name": "Eldermourne",
+        "plot": "A gothic tale",
+        "public": false
+    }
+]

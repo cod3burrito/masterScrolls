@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose')
-const LocationSchema = require('./Location')
 const CampaignSchema = new Schema(
     {
         name: {
