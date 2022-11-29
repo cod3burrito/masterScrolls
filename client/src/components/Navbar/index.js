@@ -9,16 +9,15 @@ const Navbar = () => {
                 <nav className='navbar navbar-expand-lg'>
                     <Link className="navbar-brand" to="/">Home Page</Link>
                     <div id='navbarNav' style={{ marginLeft: "auto" }}>
-                        <ul className='nav-item'>
+                        <ul className="navbar-nav">
                             {/* space for other links */}
-                            {/* {Auth.loggedIn() ?
+                            {Auth.loggedIn() ?
                                 (<li className="nav-item ">
                                     <Link onClick={Auth.logout} className="nav-link" to="/">Logout</Link>
                                 </li>) :
                                 (<li className="nav-item ">
                                     <Link className="nav-link" to="/login">Login</Link>
-                                </li>)} */}
-                                <p>Navbar</p>
+                                </li>)}
 
                         </ul>
                     </div>
