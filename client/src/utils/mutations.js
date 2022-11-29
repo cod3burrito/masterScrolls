@@ -25,6 +25,11 @@ mutation CreateUser($username: String!, $email: String!, $password: String!) {
         username
         email
         _id
+        campaigns {
+          _id
+          name
+          plot
+        }
       }
       token
     }

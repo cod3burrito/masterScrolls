@@ -24,7 +24,7 @@ const resolvers = {
     },
     Mutation: {
         login: async (parent, { username, password }) => {
-            const user = await User.findOne({ username });
+            const user = await User.findOne({ username }).populate('campaigns');
 
             if (!user) {
                 throw new AuthenticationError('You have not joined the ranks with these credentials! Please verify your identity or query the council for membership to our guild.')

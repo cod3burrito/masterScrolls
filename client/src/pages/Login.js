@@ -1,11 +1,15 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useContext } from 'react'
+import { Link, Navigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { LOGIN_USER } from '../utils/mutations'
+import UserContext from '../utils/UserContext';
+import { SAVE_USER } from '../utils/action';
 
 import Auth from '../utils/auth'
 
 const Login = () => {
+    const { setUser } = useContext(UserContext);
+
     const [formState, setFormState] = useState({ username: '', password: '' });
     const [login, { error, data }] = useMutation(LOGIN_USER);
 
@@ -22,6 +26,20 @@ const Login = () => {
             const { data } = await login({
                 variables: { ...formState }
             });
+            console.log(data.login.user);
+
+            const payload = {
+                username: data.login.user.username,
+                email: data.login.user.email,
+                _id: data.login.user._id,
+                campaigns: data.login.user.campaigns,
+            }
+
+            setUser({
+                type: SAVE_USER,
+                payload: payload
+            });
+
             Auth.login(data.login.token);
         } catch (e) {
             console.error(e)
@@ -39,10 +57,7 @@ const Login = () => {
                     <h4 className="card-header p-2">Login</h4>
                     <div className="card-body">
                         {data ? (
-                            <p>
-                                Success! You may now head{' '}
-                                <Link to="/">back to the homepage.</Link>
-                            </p>
+                            <Navigate to="/campaigns" />
                         ) : (
                             <form style={{ display: "flex", flexDirection: "column" }} onSubmit={handleFormSubmit}>
                                 <p >Username:</p>

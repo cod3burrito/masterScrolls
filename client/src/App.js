@@ -3,7 +3,9 @@ import './App.css';
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client'
 import { Routes, Route } from 'react-router-dom'
 import { setContext } from '@apollo/client/link/context'
-import UserProvider from './utils/UserContext';
+import UserContext from './utils/UserContext';
+import { useReducer } from 'react';
+import { reducer } from './utils/reducers';
 //pages
 import Home from './pages/Home'
 import Login from './pages/Login';
@@ -32,17 +34,20 @@ const client = new ApolloClient({
 })
 
 function App() {
+
+  const [user, setUser] = useReducer(reducer, {});
+
   return (
-    <ApolloProvider client={client}>
-      <Navbar />
-      <UserProvider>
+    <ApolloProvider client={client}>      
+      <UserContext.Provider value={{user, setUser}}>
+        <Navbar />
         <Routes>
           <Route path="/" index element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/campaigns" element={<Campaigns />} />
         </Routes>
-      </UserProvider>
+      </UserContext.Provider>
     </ApolloProvider>
   );
 }
