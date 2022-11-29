@@ -1,31 +1,18 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GETUSER = gql`
-    query getUser($getUserId: ID!) {
-        getUser(id: $getUserId) {
-            campaigns {
-                _id
-                name
-                plot
-                locations {
-                    _id
-                    details
-                    name
-                    characters {
-                        _id
-                        alive
-                        allies
-                        class
-                        goals
-                        level
-                        name
-                        notes
-                        personality
-                    }
-                }
-            }
-        }
+  query getUser($getUserId: ID!) {
+    getUser(id: $getUserId) {
+      _id
+      email
+      username
+      campaigns {
+        _id
+        name
+        plot
+      }
     }
+  }
 `;
 
 export const QUERY_GETCAMPAIGN = gql`

@@ -9,6 +9,7 @@ import Home from './pages/Home'
 import Navbar from './components/Navbar'
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Campaigns from './pages/Campaigns';
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('id_token');
@@ -38,6 +39,7 @@ function App() {
         <Route path="/" index element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/campaigns" element={<Campaigns />} />
       </Routes>
 
     </ApolloProvider>
