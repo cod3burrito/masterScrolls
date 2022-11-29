@@ -41,6 +41,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <UserContext.Provider value={{user, setUser}}>
+        <Navbar />
         <Routes>
           <Route path="/" index element={<Home />} />
           <Route path="/login" element={<Login />} />
