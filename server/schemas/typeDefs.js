@@ -34,13 +34,18 @@ const typeDefs = gql`
         notes: [String]
     }
 
+    type Auth {
+        token: ID!
+        user: User
+      }
+      
     type Query{
         getUser(id:ID!): User
         getCampaign(id:ID!): Campaign
     }
 
     type Mutation {
-        createUser(username: String!, email: String!, password: String!): User
+        createUser(username: String!, email: String!, password: String!): Auth
         deleteUser(userId: ID!): User
         createCampaign(userId: ID, name: String!, plot: String): Campaign
         editCampaign(campaignId: ID!, name: String, plot: String): Campaign
@@ -51,7 +56,7 @@ const typeDefs = gql`
         createCharacter(locationId: ID!, name: String!, class: String, level: Int, goals: String, personality: String): Character
         editCharacter(characterId: ID!, name: String, class: String, level: Int, goals: String, personality: String, allies: [String], notes: [String]): Character
         deleteCharacter(locationId: ID!, characterId: ID!): Character
-        login(username: String!, password: String!): User
+        login(username: String!, password: String!): Auth
     }
 `;
 
