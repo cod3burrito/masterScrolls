@@ -7,9 +7,11 @@ const Navbar = () => {
             <header>
                 <nav className='navbar navbar-expand-lg'>
                     <Link className="navbar-brand" to="/">Home Page</Link>
-                    <Link className="campaigns" to="/campaigns">Campaigns</Link>
                     <div id='navbarNav' style={{ marginLeft: "auto" }}>
                         <ul className="navbar-nav">
+                            <li className='nav-item'>
+                                <Link className="nav-link campaigns" to="/campaigns">Campaigns</Link>
+                            </li>
                             {/* space for other links */}
                             (<li className="nav-item">
                                 <Link className="nav-link" to="/campaigns">Campaign Library</Link>
