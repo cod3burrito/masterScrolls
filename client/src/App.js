@@ -3,13 +3,16 @@ import './App.css';
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client'
 import { Routes, Route } from 'react-router-dom'
 import { setContext } from '@apollo/client/link/context'
+import UserContext from './utils/UserContext';
+import { useReducer } from 'react';
+import { reducer } from './utils/reducers';
 //pages
 import Home from './pages/Home'
-//components
-import Navbar from './components/Navbar'
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Campaigns from './pages/Campaigns';
+//components
+import Navbar from './components/Navbar'
 import SingleCampaign from './pages/SingleCampaign';
 
 const authLink = setContext((_, { headers }) => {
@@ -32,18 +35,21 @@ const client = new ApolloClient({
 })
 
 function App() {
+
+  const [user, setUser] = useReducer(reducer, {});
+
   return (
     <ApolloProvider client={client}>
-
-      <Navbar />
-      <Routes>
-        <Route path="/" index element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/campaigns" element={<Campaigns />} />
-        <Route path="/campaign/:campaignId" element={<SingleCampaign />} />
-      </Routes>
-
+      <UserContext.Provider value={{user, setUser}}>
+        <Navbar />
+        <Routes>
+          <Route path="/" index element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/campaigns" element={<Campaigns />} />
+          <Route path="/campaign/:campaignId" element={<SingleCampaign />} />
+        </Routes>
+      </UserContext.Provider>
     </ApolloProvider>
   );
 }

@@ -1,6 +1,10 @@
+import { useContext } from 'react';
+import UserContext from '../utils/UserContext';
 
+function Campaigns(props) {
+    const { user } = useContext(UserContext);
+    console.log(user);
 
-function Campaigns() {
     return(
         <>
             <p>Campaign</p>
