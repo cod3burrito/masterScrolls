@@ -5,21 +5,21 @@ const typeDefs = gql`
         _id: ID
         username: String
         email: String
-        campaigns: [ID]
+        campaigns: [Campaign]
     }
 
     type Campaign {
         _id: ID
         name: String
         plot: String
-        locations: [ID]
+        locations: [Location]
     }
 
     type Location {
         _id: ID
         name: String
         details: String
-        characters: [ID]
+        characters: [Character]
     }
 
     type Character {
@@ -36,7 +36,7 @@ const typeDefs = gql`
 
     type Query{
         getUser(id:ID!): User
-        getCampaign: [Campaign]
+        getCampaign(id:ID!): Campaign
     }
 
     type Mutation {
