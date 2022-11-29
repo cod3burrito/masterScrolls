@@ -24,7 +24,7 @@ const resolvers = {
     },
     Mutation: {
         login: async (parent, { username, password }) => {
-            const user = await User.findOne({ username });
+            const user = await User.findOne({ username }).populate('campaigns');
 
             if (!user) {
                 throw new AuthenticationError('You have not joined the ranks with these credentials! Please verify your identity or query the council for membership to our guild.')
@@ -46,24 +46,25 @@ const resolvers = {
         deleteUser: async (parent, { userId }) => {
             return User.findOneAndDelete({ _id: userId });
         },
-        createCampaign: async (parents, { userId, name, plot }, context) => {
-            // if (context.user) {
-            const defaultLocation = await Location.create(
+        createCampaign: async (parents, { name, plot }, context) => {
+            if (context.user) {
+                const defaultLocation = await Location.create(
                 { name: "Unassociated", details: "This is the default location created when you create a campaign" },
                 // { details: "This is the default location created when you create a campaign" }
-            )
-            //new version, potential option
-            const newCampaign = await Campaign.create({ name, plot, locations: [defaultLocation._id] })
-            //add the new campaign to the user's data
-            const updatedUser = await User.findByIdAndUpdate(
-                // { _id: context.user._id },
-                { _id: userId },
-                { $push: { campaigns: newCampaign._id } },
-                { new: true }
-            )
+                )
+                //new version, potential option
+                const newCampaign = await Campaign.create({ name, plot, locations: [defaultLocation._id] })
+                //add the new campaign to the user's data
+                const updatedUser = await User.findByIdAndUpdate(
+                    { _id: context.user._id },
+                    { $push: { campaigns: newCampaign._id } },
+                    { new: true }
+                )
 
-            return newCampaign
-            // }
+                return newCampaign
+            } else {
+                throw new AuthenticationError("You are not logged in");
+            }
         },
         editCampaign: async (parents, { campaignId, name, plot }, context) => {
             // if (context.user) {
