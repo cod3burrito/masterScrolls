@@ -11,13 +11,14 @@ const Navbar = () => {
                     <div id='navbarNav' style={{ marginLeft: "auto" }}>
                         <ul className='nav-item'>
                             {/* space for other links */}
-                            {Auth.loggedIn() ?
+                            {/* {Auth.loggedIn() ?
                                 (<li className="nav-item ">
                                     <Link onClick={Auth.logout} className="nav-link" to="/">Logout</Link>
                                 </li>) :
                                 (<li className="nav-item ">
                                     <Link className="nav-link" to="/login">Login</Link>
-                                </li>)}
+                                </li>)} */}
+                                <p>Navbar</p>
 
                         </ul>
                     </div>
