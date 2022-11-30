@@ -26,7 +26,6 @@ const Login = () => {
             const { data } = await login({
                 variables: { ...formState }
             });
-            console.log(data.login.user);
 
             const payload = {
                 username: data.login.user.username,
