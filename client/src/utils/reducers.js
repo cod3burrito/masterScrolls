@@ -1,6 +1,7 @@
 import { 
     SAVE_USER,
-    ADD_CAMPAIGN
+    ADD_CAMPAIGN,
+    UPDATE_CAMPAIGN
  } from './action';
 
 export const reducer = (state, action) => {
@@ -16,6 +17,21 @@ export const reducer = (state, action) => {
                 ...state,
                 campaigns: [action.payload, ...state.campaigns]
             }
-        }        
+        }  
+        case UPDATE_CAMPAIGN: {
+            const currentCampaigns = [...state.campaigns];
+            const updatedCampaigns = currentCampaigns.map((campaign) => {
+                if(campaign._id === action.payload._id){
+                    return action.payload;
+                }
+
+                return campaign;
+            })
+            console.log(updatedCampaigns)
+            return{
+                ...state,
+                campaigns: updatedCampaigns
+            }
+        }      
     }
 }
