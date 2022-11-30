@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Modal } from 'react-bootstrap'
 import Character from '../Character'
+import { useMutation } from '@apollo/client'
+import { EDIT_CHARACTER } from '../../utils/mutations'
 const CharacterList = ({ characters }) => {
     const [showModal, setShowModal] = useState(false)
     const [currentCharacter, setCurrentCharacter] = useState('')
-
     const [allCharacters, setAllChars] = useState(characters)
+
     if (!characters) {
         return (<h3> No characters found in this location!</h3>)
     }

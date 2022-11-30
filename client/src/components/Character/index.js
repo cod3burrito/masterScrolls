@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { EDIT_CHARACTER } from '../../utils/mutations'
 import { Navigate } from 'react-router-dom'
-const Character = ({ character, setShowModal }) => {
+const Character = ({ character, allCharacters, setAllChars, setShowModal }) => {
     // console.log(allCharacters)
     const initialState = { ...character }
     console.log(initialState)
@@ -10,69 +10,69 @@ const Character = ({ character, setShowModal }) => {
     const [isActive, setActive] = useState(true)
     const [AllyField, setAllyField] = useState("none")
     const [NoteField, setNoteField] = useState('none')
+    const [editCharacter, { error, data }] = useMutation(EDIT_CHARACTER)
 
     const handleChange = (event) => {
         // console.log(event.target)
         const { name, value } = event.target;
-        console.log(typeof (value))
+        console.log(name, value)
+        console.log(typeof value)
         setFormState({
-            // _id: formState._id,
             ...formState,
             [name]: value,
         })
+        // console.log(formState)
+
+
+
     };
-    const [editCharacter, { error, data }] = useMutation(EDIT_CHARACTER)
     const toggleEdit = () => {
         setActive(false)
     }
-
+    const handleStatus = (event) => {
+        event.preventDefault();
+        const charStatus = document.getElementById("alive").value
+        console.log(charStatus)
+        setFormState({ ...formState, alive: charStatus })
+        // console.log(formState)
+    }
+    const saveAlly = (event) => {
+        event.preventDefault()
+        const newAllyField = document.getElementById("newAllyInput").value
+        const newAlly = newAllyField.split(',')
+        const newAllyArray = [...formState.allies, ...newAlly]
+        setFormState({ ...formState, allies: newAllyArray })
+    }
+    const saveNote = (event) => {
+        event.preventDefault()
+        const newNoteField = document.getElementById("newNoteInput").value
+        const newNote = newNoteField.split(',')
+        const newNoteArray = [...formState.notes, ...newNote]
+        setFormState({ ...formState, notes: newNoteArray })
+    }
     // note to self the modal updates, but the list outside of this does not, how traverse files?
     const saveCharacter = async (event) => {
         event.preventDefault()
-        const newAllyField = document.getElementById("newAllyInput").value
-        const newNoteField = document.getElementById("newNoteInput").value
-        const levelInput = parseInt(document.getElementById("level").value)
-        console.log(levelInput)
-        console.log(newAllyField)
-        const newAlly = newAllyField.split(',')
-        console.log(newAlly)
-        const newNote = newNoteField.split(',')
-        const newAllyArray = [...character.allies, ...newAlly]
-        const newNoteArray = [...character.notes, ...newNote]
-        console.log(newAllyArray)
-        // if (newAlly == [""] && newNote == [""]) {
-        //     setFormState({ ...character, notes: [...character.notes, ...newNote] })
-
-        // } else if (newNote == [""]) {
-        //     setFormState({ ...character, allies: [...character.allies, ...newAlly,] })
-
-        // } else if (newAlly == [""]) {
-        //     setFormState({ ...character })
-        // } else {
-        //     setFormState({ ...character, allies: [...character.allies, ...newAlly,], notes: [...character.notes, ...newNote] })
-
-        // }
-        // console.log(formState)
-        await setFormState({ ...character, level: levelInput, allies: newAllyArray })
         console.log(formState)
+
         const { data } = await editCharacter({
-            variables: { characterId: character._id, ...formState }
+            variables: { characterId: formState._id, ...formState }
         })
         console.log(data)
         // setFormState(data.editCharacter)
         setActive(true)
-        // setAllyField("none")
-        // setNoteField("none")
-        // const updatedCharacters = await allCharacters.map(char => {
-        //     if (char._id === formState._id) {
-        //         console.log("gottem")
-        //         return formState
-        //     }
-        //     return char
-        // })
+        setAllyField("none")
+        setNoteField("none")
+        const updatedCharacters = await allCharacters.map(char => {
+            if (char._id === formState._id) {
+                console.log("gottem")
+                return formState
+            }
+            return char
+        })
 
-        // setAllChars(updatedCharacters)
-        // setShowModal(false)
+        setAllChars(updatedCharacters)
+        setShowModal(false)
     }
     const addAlly = () => {
         setAllyField("block")
@@ -97,12 +97,12 @@ const Character = ({ character, setShowModal }) => {
                     </div>
                     <div style={styles.padding}>
                         <label for="level">Level:</label>
-                        <input id="level" name="level" type="number" value={formState.level} disabled={isActive} onChange={handleChange} />
+                        <input id="level" name="level" type="text" value={formState.level} disabled={isActive} onChange={handleChange} />
                     </div>
                     {/* make below the boolean not input */}
                     <div style={styles.padding}>
                         <label for="alive">Status</label>
-                        <input name="alive" type="checkbox" value={formState.alive} disabled={isActive} onChange={handleChange} />
+                        <input id="alive" name="alive" type="checkbox" value={formState.alive} disabled={isActive} onChange={handleStatus} />
                     </div>
                     <div style={styles.padding}>
                         <label for="goals"> Goals:</label>
@@ -122,6 +122,7 @@ const Character = ({ character, setShowModal }) => {
                     <div id="newAllyField" style={{ display: AllyField }}>
                         <label for="newAlly">If more than one Ally, please seperate with a comma</label>
                         <input id="newAllyInput" name="newAlly" ></input>
+                        <button onClick={saveAlly}> Save new Ally</button>
                     </div>
                     <p> Notes:</p>
                     <ul>
@@ -135,6 +136,7 @@ const Character = ({ character, setShowModal }) => {
                     <div id="newNoteField" style={{ display: NoteField }}>
                         <label for="newNote">Please seperate each notw with a comma</label>
                         <input id="newNoteInput" name="newNote" ></input>
+                        <button onClick={saveNote}> Save Notes</button>
                     </div>
                 </div>
 
