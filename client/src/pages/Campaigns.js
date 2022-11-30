@@ -81,15 +81,12 @@ function Campaigns() {
             const { data } = await editState({
                 variables: {campaignId: stateCampaign._id, ...stateCampaign}
             })
-            console.log(data);
 
             const payload = {
                 name: data.editCampaign.name,
                 plot: data.editCampaign.plot,
                 _id: data.editCampaign._id,
             };
-
-            console.log(payload);
 
             setUser({
                 type: UPDATE_CAMPAIGN,
@@ -105,7 +102,6 @@ function Campaigns() {
     // Handles the mutations for deleting a campaign and updates Global State
     const deleteCampaign = async (id) => {
         try{
-            console.log(id);
             const { data } = await deleteState({
                 variables: {campaignId: id}
             })
