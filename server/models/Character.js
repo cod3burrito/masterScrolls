@@ -14,7 +14,7 @@ const CharacterSchema = new Schema(
             type: String,
         },
         level: {
-            type: Number,
+            type: String,
         },
         goals: {
             type: String,
