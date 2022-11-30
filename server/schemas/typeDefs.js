@@ -49,7 +49,7 @@ const typeDefs = gql`
         deleteUser(userId: ID!): User
         createCampaign(userId: ID, name: String!, plot: String): Campaign
         editCampaign(campaignId: ID!, name: String, plot: String): Campaign
-        deleteCampaign(userId:ID!,campaignId: ID!): Campaign
+        deleteCampaign(campaignId: ID!): Campaign
         createLocation(campaignId: ID!, name: String!, details: String): Location
         editLocation(campaignId: ID!, locationId: ID!, name: String, details: String): Location
         deleteLocation(campaignId: ID!, locationId: ID!): Location

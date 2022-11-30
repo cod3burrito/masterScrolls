@@ -1,11 +1,11 @@
 import { useContext, useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { CREATE_CAMPAIGN, EDIT_CAMPAIGN } from '../utils/mutations';
+import { CREATE_CAMPAIGN, EDIT_CAMPAIGN, DELETE_CAMPAIGN } from '../utils/mutations';
 import UserContext from '../utils/UserContext';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { ADD_CAMPAIGN, UPDATE_CAMPAIGN } from '../utils/action'
+import { ADD_CAMPAIGN, UPDATE_CAMPAIGN, REMOVE_CAMPAIGN } from '../utils/action'
 
 function Campaigns() {
     const { user, setUser } = useContext(UserContext);
@@ -14,7 +14,9 @@ function Campaigns() {
     const [edit, setEdit] = useState(false);
     const [create, {createError, createdata}] = useMutation(CREATE_CAMPAIGN);
     const [editState, {editError, editData}] = useMutation(EDIT_CAMPAIGN);
+    const [deleteState, { deleteError, deleteData } ] = useMutation(DELETE_CAMPAIGN);
 
+    // Handles the closing of the modal
     const handleClose = () => {
         setShow(false);
         setEdit(false);
@@ -24,9 +26,14 @@ function Campaigns() {
             _id: ""
         });
     }
+
+    // Handles the displaying of the modal
     const handleShow = () => setShow(true);
+
+    // Handles if the user is creating new campaign or editing a campaign
     const handleEdit = () => setEdit(true);
 
+    // Handles form input changes
     const handleChange = (event => {
         const name = event.target.name;
         const value = event.target.value;
@@ -36,6 +43,7 @@ function Campaigns() {
         })
     })
 
+    // Handles the mutations for creating a campaign and updates Global State
     const createCampaign = async () => {
         try{
             if(stateCampaign.name){
@@ -67,8 +75,8 @@ function Campaigns() {
         }        
     }
 
+    // Handles the mutations for editing a campaign and updates Global State
     const editCampaign = async () => {
-        console.log("hello");
         try{            
             const { data } = await editState({
                 variables: {campaignId: stateCampaign._id, ...stateCampaign}
@@ -94,6 +102,28 @@ function Campaigns() {
         }
     }
 
+    // Handles the mutations for deleting a campaign and updates Global State
+    const deleteCampaign = async (id) => {
+        try{
+            console.log(id);
+            const { data } = await deleteState({
+                variables: {campaignId: id}
+            })
+
+            const payload = {
+                _id: data.deleteCampaign._id
+            }
+
+            setUser({
+                type: REMOVE_CAMPAIGN,
+                payload: payload
+            });
+
+        }catch (err){
+            console.log(err);
+        }
+    }
+
     return(
         <>
             <h2>Hello, {user.username}. Which campaign would you like to view?</h2>
@@ -107,6 +137,9 @@ function Campaigns() {
                             handleEdit();
                             handleShow();
                         }}>Edit Campaign</Button>
+                        <Button onClick={() => {                            
+                            deleteCampaign(campaign._id);
+                        }}>Delete Campaign</Button>
                         <Link to={`/campaign/${campaign._id}`}>View Campaign</Link>
                     </div>
                 )
