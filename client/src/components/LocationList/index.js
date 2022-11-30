@@ -3,8 +3,27 @@ import { Link } from 'react-router-dom'
 import CharacterList from '../CharacterList'
 import Collapsible from 'react-collapsible'
 import Button from 'react-bootstrap/Button';
+import { useMutation } from '@apollo/client';
+import { EDIT_LOCATION } from '../../utils/mutations';
+import Modal from 'react-bootstrap/Modal';
+
 const LocationList = ({ locations }) => {
-    
+    const [edit] = useMutation( EDIT_LOCATION)
+    const [showModal, setShowModal] = useState(false);
+    const [stateLocation, setStateLocation] = useState({name: "", details: "", _id: ""})
+
+    const handleClose = () => setShowModal(false);
+    const handleShow = () => setShowModal(true);
+
+    const handleChange = (event => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setStateLocation({
+            ...stateLocation,
+            [name]: value
+        })
+    })
+
     if (!locations) {
         //this should be impossible since we have a default one made
         return (<h3>No Locations in this campaign yet!</h3>)
@@ -18,7 +37,42 @@ const LocationList = ({ locations }) => {
                         <>
                         <div>
                             <h2>{location.name}</h2>
-                        <Button>Edit Location</Button>
+                        <Button onClick={handleShow}>Edit Location</Button>
+                        <Modal show={showModal} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit Location</Modal.Title>
+                </Modal.Header>    
+                <Modal.Body>
+                    <form style={{ display: "flex", flexDirection: "column" }}>
+                        <p >Location Name:</p>
+                        <input
+                            className="form-input"
+                            placeholder="Location Name"
+                            name="name"
+                            type="text"
+                            id='name-input'
+                            value={stateLocation.name}
+                            onChange={handleChange}
+                        />
+                        <br></br>
+
+                        <p >Plot:</p>
+                        <input
+                            className="form-input"
+                            placeholder="Campaign Plot"
+                            name="details"
+                            type="test"
+                            value={stateLocation.dis}
+                            onChange={handleChange}
+                            />
+                    </form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={handleClose}>Close</Button>
+                    {edit ? (<Button onClick={editLocation}>Edit</Button>):
+                    (<Button onClick={createCampaign}>Save</Button>)}
+                </Modal.Footer>
+            </Modal>
                             <Collapsible key={location._id} trigger={"View Characters"}>
                                 <ul className='list-group list-group-flush'>
                                     <CharacterList characters={location.characters} />

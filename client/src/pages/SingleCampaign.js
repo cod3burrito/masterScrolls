@@ -63,7 +63,7 @@ const SingleCampaign = () => {
         return <div>Loading...</div>;
     }
     return (
-        <div className="campaign">
+        <div className="newLocation">
             <h1>{campaign.name}</h1>
             <LocationList locations={campaign.locations} />
             <Button onClick={handleShow}>New Location</Button>
