@@ -20,6 +20,7 @@ const Login = () => {
             [name]: value,
         });
     })
+
     const handleFormSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -49,6 +50,7 @@ const Login = () => {
             password: '',
         });
     }
+    
     return (
         <main className='justify-center mb-4'>
             <div className='d-flex justify-content-center'>
