@@ -11,13 +11,17 @@ const Navbar = () => {
                             <li className="nav-item">
                                 <Link className="navbar-brand" to="/">Home Page</Link>
                             </li>
-                            <li className="nav-item">
-                                <Link className="navbar-brand" to="/campaigns">Campaign Library</Link>
-                            </li>
+                            
                             {Auth.loggedIn() ?
-                                (<li className="nav-item">
-                                    <Link onClick={Auth.logout} className="navbar-brand" to="/">Logout</Link>
-                                </li>) :
+                                (
+                                <>    
+                                    <li className="nav-item">
+                                        <Link className="navbar-brand" to="/campaigns">Campaign Library</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link onClick={Auth.logout} className="navbar-brand" to="/">Logout</Link>
+                                    </li>                                    
+                                </>) :
                                 (<li className="nav-item ">
                                     <Link className="navbar-brand" to="/login">Login</Link>
                                 </li>)}
