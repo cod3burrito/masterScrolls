@@ -70,7 +70,8 @@ const resolvers = {
             // if (context.user) {
             const updatedCampaign = await Campaign.findByIdAndUpdate(
                 { _id: campaignId },
-                { $set: { name: name, plot: plot } }
+                { $set: { name: name, plot: plot } },
+                { new: true }
 
             )
             return updatedCampaign
