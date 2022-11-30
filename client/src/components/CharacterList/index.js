@@ -5,9 +5,21 @@ import Character from '../Character'
 const CharacterList = ({ characters }) => {
     const [showModal, setShowModal] = useState(false)
     const [currentCharacter, setCurrentCharacter] = useState('')
-
+    //state for all characters
+    //map the characterState
+    // const [allCharacter, setAllChars] = useState(characters)
+    //in the modal pass it down
     if (!characters) {
         return (<h3> No characters found in this location!</h3>)
+    }
+
+    const styles = {
+        alive: {
+            backgroundColor: "blue"
+        },
+        inactive: {
+            backgroundColor: "red"
+        }
     }
     return (
         <>

@@ -35,7 +35,7 @@ const Character = ({ character }) => {
         setFormState(data.editCharacter)
         setActive(true)
         setAllyField("none")
-        
+        // filter for current character, and swap out the info setAllChars()
     }
     const addAlly = () => {
         setAllyField("block")
