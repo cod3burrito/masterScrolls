@@ -54,3 +54,18 @@ export const EDIT_CAMPAIGN = gql`
     }
   }
 `
+
+export const EDIT_CHARACTER = gql`
+mutation Mutation($characterId: ID!, $name: String, $class: String, $level: Int, $goals: String, $personality: String, $allies: [String], $notes: [String]) {
+    editCharacter(characterId: $characterId, name: $name, class: $class, level: $level, goals: $goals, personality: $personality, allies: $allies, notes: $notes) {
+      name
+      alive
+      allies
+      class
+      goals
+      level
+      notes
+      personality
+    }
+  }
+  `;
