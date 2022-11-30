@@ -42,19 +42,10 @@ const SingleCampaign = () => {
             if(newLocation.name){
                 console.log("Got a name");
                 const { data } = await create({
-                    variables: {...newLocation}
+                    variables: {campaignId: campaignParam, ...newLocation}
                 });
-                console.log("hello")
-                const payload = {
-                    name: data.createLocation.name,
-                    details: data.createLocation.details,
-                    _id: data.createLocation._id,
-                };
-
-                setUser({
-                    type: ADD_CAMPAIGN,
-                    payload: payload
-                });
+                
+            
     
                 setNewLocation({
                     name: "",

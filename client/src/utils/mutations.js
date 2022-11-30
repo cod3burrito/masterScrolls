@@ -45,13 +45,25 @@ export const CREATE_CAMPAIGN = gql`
   }
 `
 export const CREATE_LOCATION = gql`
-mutation CreateLocation($name: String!, $details: String) {
-  createLocation(name: $name, details: $details) {
+mutation CreateLocation($campaignId: ID!, $name: String!, $details: String) {
+  createLocation(campaignId: $campaignId, name: $name, details: $details) {
+    _id
     details
     name
-    _id
+    characters {
+      _id
+      alive
+      allies
+      class
+      goals
+      level
+      name
+      notes
+      personality
+    }
   }
 }`
+
 
 export const EDIT_CAMPAIGN = gql`
   mutation Mutation($campaignId: ID!, $name: String, $plot: String) {

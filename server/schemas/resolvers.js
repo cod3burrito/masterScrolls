@@ -97,9 +97,10 @@ const resolvers = {
                 const newLocation = await Location.create({ name, details });
                 const updateCampaign = await Campaign.findByIdAndUpdate(
                     { _id: campaignId },
-                    { $push: { location: newLocation._id } }
+                    { $push: { locations: newLocation._id } },
+
                 )
-                return { newLocation, updateCampaign };
+                return  newLocation ;
             }
         },
         editLocation: async (parent, { locationId, name, details }, context) => {
