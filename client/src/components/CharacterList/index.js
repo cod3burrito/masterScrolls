@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Modal } from 'react-bootstrap'
 import Character from '../Character'
+import { useMutation } from '@apollo/client'
+import { EDIT_CHARACTER } from '../../utils/mutations'
 const CharacterList = ({ characters }) => {
     const [showModal, setShowModal] = useState(false)
     const [currentCharacter, setCurrentCharacter] = useState('')
-    //state for all characters
-    //map the characterState
-    // const [allCharacter, setAllChars] = useState(characters)
-    //in the modal pass it down
+    const [allCharacters, setAllChars] = useState(characters)
+
     if (!characters) {
         return (<h3> No characters found in this location!</h3>)
     }
@@ -23,7 +23,7 @@ const CharacterList = ({ characters }) => {
     }
     return (
         <>
-            {characters.map((character) => {
+            {allCharacters.map((character) => {
                 return (<>
                     {character.alive ? (
                         <button style={styles.alive} onClick={() => {
@@ -50,7 +50,7 @@ const CharacterList = ({ characters }) => {
                 show={showModal}
                 onHide={() => setShowModal(false)}
                 aria-labelledby="character-modal" >
-                <Character character={currentCharacter} />
+                <Character setShowModal={setShowModal} allCharacters={allCharacters} setAllChars={setAllChars} character={currentCharacter} />
             </Modal>
         </>
     )

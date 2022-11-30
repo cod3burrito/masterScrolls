@@ -93,7 +93,7 @@ export const DELETE_CAMPAIGN = gql`
 `
 
 export const EDIT_CHARACTER = gql`
-mutation Mutation($characterId: ID!, $name: String, $class: String, $level: Int, $goals: String, $personality: String, $allies: [String], $notes: [String]) {
+mutation Mutation($characterId: ID!, $name: String, $class: String, $level: String, $goals: String, $personality: String, $allies: [String], $notes: [String]) {
     editCharacter(characterId: $characterId, name: $name, class: $class, level: $level, goals: $goals, personality: $personality, allies: $allies, notes: $notes) {
       name
       alive
