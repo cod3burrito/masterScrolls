@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import CharacterList from '../CharacterList'
 import Collapsible from 'react-collapsible'
+import Button from 'react-bootstrap/Button';
 const LocationList = ({ locations }) => {
     
     if (!locations) {
@@ -15,11 +16,15 @@ const LocationList = ({ locations }) => {
                 {locations.map((location) => {
                     return (
                         <>
-                            <Collapsible key={location._id} trigger={location.name}>
+                        <div>
+                            <h2>{location.name}</h2>
+                        <Button>Edit Location</Button>
+                            <Collapsible key={location._id} trigger={"View Characters"}>
                                 <ul className='list-group list-group-flush'>
                                     <CharacterList characters={location.characters} />
                                 </ul>
                             </Collapsible>
+                        </div>   
                         </>
                     )
                 })}
