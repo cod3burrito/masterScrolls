@@ -79,17 +79,17 @@ const resolvers = {
 
         },
         deleteCampaign: async (parents, { userId, campaignId }, context) => {
-            // if (context.user) {
-            const deletedCampaign = await Campaign.findByIdAndDelete(
-                { _id: campaignId }
-            )
-            const updatedUser = await User.findByIdAndUpdate(
-                // { _id: context.user._id },
-                { _id: userId },
-                { $pull: { campaigns: campaignId } }
-            )
-            return { deletedCampaign, updatedUser }
-            // }
+            if (context.user) {
+                const deletedCampaign = await Campaign.findByIdAndDelete(
+                    { _id: campaignId }
+                )
+                const updatedUser = await User.findByIdAndUpdate(
+                    { _id: context.user._id },
+                    { $pull: { campaigns: campaignId } }
+                )
+
+                return deletedCampaign
+            }
 
         },
         createLocation: async (parents, { campaignId, name, details }, context) => {
