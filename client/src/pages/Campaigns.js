@@ -122,25 +122,29 @@ function Campaigns() {
 
     return(
         <>
-            <h2>Hello, {user.username}. Which campaign would you like to view?</h2>
-            {user.campaigns.map(campaign => {
-                return (
-                    <div key={campaign._id}>
-                        <h3>{campaign.name}</h3>
-                        <section>{campaign.plot}</section>
-                        <Button onClick={() => {
-                            setStateCampaign({name: campaign.name, plot: campaign.plot, _id: campaign._id});
-                            handleEdit();
-                            handleShow();
-                        }}>Edit Campaign</Button>
-                        <Button onClick={() => {                            
-                            deleteCampaign(campaign._id);
-                        }}>Delete Campaign</Button>
-                        <Link to={`/campaign/${campaign._id}`}>View Campaign</Link>
-                    </div>
-                )
-            })}
-            <Button onClick={handleShow}>New Campaign</Button>
+            <div className="d-flex flex-column align-items-center justify-content-center h-75">
+                <h2>Hello, {user.username}! What would you like to do today?</h2>
+                {user.campaigns.map(campaign => {
+                    return (
+                        <div className="d-flex flex-column align-items-center border border-dark rounded-pill w-50 my-2" key={campaign._id}>
+                            <h3>{campaign.name}</h3>
+                            <section className="text-wrap fs-5 mx-5">{campaign.plot}</section>
+                            <div className="m-3 w-100 d-flex justify-content-center ">
+                                <Button variant="success" size="sm"  className="mx-2 rounded-pill" onClick={() => {
+                                    setStateCampaign({name: campaign.name, plot: campaign.plot, _id: campaign._id});
+                                    handleEdit();
+                                    handleShow();
+                                }}>Edit Campaign</Button>                            
+                                <Button variant="danger" size="sm" className="mx-2 rounded-pill" onClick={() => {                            
+                                    deleteCampaign(campaign._id);
+                                }}>Delete Campaign</Button>
+                                <Link to={`/campaign/${campaign._id}`}><Button variant="primary" size="sm" className="mx-2 rounded-pill">View Campaign</Button></Link>
+                            </div>
+                        </div>
+                    )
+                })}
+                <Button variant="info" size="lg" className="mx-2 rounded-pill"onClick={handleShow}>New Campaign</Button>
+            </div>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     {edit ? (<Modal.Title>Edit Campaign</Modal.Title>):
