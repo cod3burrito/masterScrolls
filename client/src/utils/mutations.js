@@ -44,6 +44,35 @@ export const CREATE_CAMPAIGN = gql`
     }
   }
 `
+export const CREATE_LOCATION = gql`
+mutation CreateLocation($campaignId: ID!, $name: String!, $details: String) {
+  createLocation(campaignId: $campaignId, name: $name, details: $details) {
+    _id
+    details
+    name
+    characters {
+      _id
+      alive
+      allies
+      class
+      goals
+      level
+      name
+      notes
+      personality
+    }
+  }
+}`
+
+export const EDIT_LOCATION = gql`
+mutation EditLocation($locationId: ID!, $name: String, $details: String, $campaignId: ID!) {
+  editLocation(locationId: $locationId, name: $name, details: $details, campaignId: $campaignId) {
+    details
+    name
+    _id
+  }
+}
+`
 
 export const EDIT_CAMPAIGN = gql`
   mutation Mutation($campaignId: ID!, $name: String, $plot: String) {
