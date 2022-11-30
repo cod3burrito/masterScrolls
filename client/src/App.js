@@ -4,8 +4,9 @@ import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@ap
 import { Routes, Route } from 'react-router-dom'
 import { setContext } from '@apollo/client/link/context'
 import UserContext from './utils/UserContext';
-import { useReducer } from 'react';
+import {  useReducer } from 'react';
 import { reducer } from './utils/reducers';
+import Auth from './utils/auth';
 //pages
 import Home from './pages/Home'
 import Login from './pages/Login';
@@ -34,9 +35,11 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 })
 
-function App() {
+function App() {      
+  
+  const initialState = Auth.getToken() ? Auth.getUser().data : {};  
 
-  const [user, setUser] = useReducer(reducer, {});
+  const [user, setUser] = useReducer(reducer, initialState);  
 
   return (
     <ApolloProvider client={client}>
