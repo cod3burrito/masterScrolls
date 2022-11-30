@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Modal } from 'react-bootstrap'
 import Character from '../Character'
-import { useMutation } from '@apollo/client'
-import { EDIT_CHARACTER } from '../../utils/mutations'
-const CharacterList = ({ characters }) => {
+import Button from 'react-bootstrap/Button';
+
+const CharacterList = ({ locationId, characters }) => {
     const [showModal, setShowModal] = useState(false)
     const [currentCharacter, setCurrentCharacter] = useState('')
     const [allCharacters, setAllChars] = useState(characters)
-
     if (!characters) {
         return (<h3> No characters found in this location!</h3>)
     }
@@ -45,12 +44,26 @@ const CharacterList = ({ characters }) => {
                 </>
                 )
             })}
+            <Button onClick={() => {
+                setCurrentCharacter({
+                    name: null,
+                    alive: true,
+                    class: null,
+                    level: null,
+                    goals: null,
+                    personality: null,
+                    allies: [],
+                    notes: []
+                })
+                setShowModal(true)
+            }}> Add a new Charcater</Button>
+
             < Modal
                 size='lg'
                 show={showModal}
                 onHide={() => setShowModal(false)}
                 aria-labelledby="character-modal" >
-                <Character setShowModal={setShowModal} allCharacters={allCharacters} setAllChars={setAllChars} character={currentCharacter} />
+                <Character locationId={locationId} setShowModal={setShowModal} allCharacters={allCharacters} setAllChars={setAllChars} character={currentCharacter} />
             </Modal>
         </>
     )

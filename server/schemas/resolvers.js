@@ -13,7 +13,7 @@ const resolvers = {
 
         },
         //find a single campaign, irrespective of the user
-        getCampaign: async (parent, {campaignId}) => {
+        getCampaign: async (parent, { campaignId }) => {
             return await Campaign.findById(campaignId).populate({
                 path: 'locations',
                 populate: {
@@ -49,8 +49,8 @@ const resolvers = {
         createCampaign: async (parents, { name, plot }, context) => {
             if (context.user) {
                 const defaultLocation = await Location.create(
-                { name: "Unassociated", details: "This is the default location created when you create a campaign" },
-                // { details: "This is the default location created when you create a campaign" }
+                    { name: "Unassociated", details: "This is the default location created when you create a campaign" },
+                    // { details: "This is the default location created when you create a campaign" }
                 )
                 //new version, potential option
                 const newCampaign = await Campaign.create({ name, plot, locations: [defaultLocation._id] })
@@ -100,7 +100,7 @@ const resolvers = {
                     { $push: { locations: newLocation._id } },
 
                 )
-                return  newLocation ;
+                return newLocation;
             }
         },
         editLocation: async (parent, { locationId, name, details }, context) => {
@@ -146,6 +146,12 @@ const resolvers = {
 
             if (args.personality) {
                 newCharacter.personality = args.personality;
+            }
+            if (args.allies) {
+                newCharacter.allies = args.allies
+            }
+            if (args.notes) {
+                newCharacter.notes = args.notes
             }
 
             const createdCharacter = await Character.create(newCharacter);
