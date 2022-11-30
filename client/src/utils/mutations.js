@@ -51,5 +51,14 @@ mutation CreateLocation($name: String!, $details: String) {
     name
     _id
   }
-}
+}`
+
+export const EDIT_CAMPAIGN = gql`
+  mutation Mutation($campaignId: ID!, $name: String, $plot: String) {
+    editCampaign(campaignId: $campaignId, name: $name, plot: $plot) {
+      _id
+      name
+      plot
+    }
+  }
 `
