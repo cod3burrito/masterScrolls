@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
-import { EDIT_CHARACTER, CREATE_CHARACTER } from '../../utils/mutations'
+import { EDIT_CHARACTER, CREATE_CHARACTER, DELETE_CHARACTER } from '../../utils/mutations'
 import { Navigate } from 'react-router-dom'
 const Character = ({ character, allCharacters, setAllChars, setShowModal, locationId }) => {
     // console.log(allCharacters)
@@ -12,6 +12,7 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
     const [NoteField, setNoteField] = useState('none')
     const [createCharacter, { createError, createData }] = useMutation(CREATE_CHARACTER)
     const [editCharacter, { editError, editData }] = useMutation(EDIT_CHARACTER)
+    const [deleteCharacter, { deleteError, deleteData }] = useMutation(DELETE_CHARACTER)
     console.log(locationId)
     useEffect(() => {
         setActive(false)
@@ -47,7 +48,12 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
         const newNoteArray = [...formState.notes, ...newNote]
         setFormState({ ...formState, notes: newNoteArray })
     }
-
+    const addAlly = () => {
+        setAllyField("block")
+    }
+    const addNote = () => {
+        setNoteField("block")
+    }
     const saveCharacter = async (event) => {
         event.preventDefault()
         console.log(formState)
@@ -96,12 +102,17 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
         setAllChars(updatedCharacters)
         setShowModal(false)
     }
-    const addAlly = () => {
-        setAllyField("block")
-    }
-    const addNote = () => {
-        setNoteField("block")
 
+    const deleteChar = async () => {
+        const { data } = await deleteCharacter({
+            variables: { locationId: locationId, characterId: formState._id }
+        })
+        console.log(allCharacters)
+        const updatedCharacters = await allCharacters.filter((char) => char._id !== formState._id)
+
+        // console.log(updatedCharacters)
+        setAllChars(updatedCharacters)
+        setShowModal(false)
     }
     const styles = {
         padding: {
@@ -169,6 +180,7 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
                 (<>
                     <button onClick={saveChanges}>Save</button>
                     <button onClick={toggleEdit} id='editBtn'>Edit</button>
+                    <button onClick={deleteChar}>Delete</button>
                 </>)}
 
         </>

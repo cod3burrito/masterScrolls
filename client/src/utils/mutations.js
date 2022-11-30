@@ -120,3 +120,11 @@ mutation Mutation($characterId: ID!, $name: String, $class: String, $level: Stri
     }
   }
   `;
+
+export const DELETE_CHARACTER = gql`
+  mutation DeleteCharacter($locationId: ID!, $characterId: ID!) {
+    deleteCharacter(locationId: $locationId, characterId: $characterId) {
+      name
+    }
+  }
+  `;
