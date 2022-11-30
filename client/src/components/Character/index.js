@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
-import { EDIT_CHARACTER } from '../../utils/mutations'
+import { EDIT_CHARACTER, CREATE_CHARACTER } from '../../utils/mutations'
 import { Navigate } from 'react-router-dom'
-const Character = ({ character, allCharacters, setAllChars, setShowModal }) => {
+const Character = ({ character, allCharacters, setAllChars, setShowModal, locationId }) => {
     // console.log(allCharacters)
     const initialState = { ...character }
     console.log(initialState)
@@ -10,30 +10,28 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal }) => {
     const [isActive, setActive] = useState(true)
     const [AllyField, setAllyField] = useState("none")
     const [NoteField, setNoteField] = useState('none')
-    const [editCharacter, { error, data }] = useMutation(EDIT_CHARACTER)
-
+    const [createCharacter, { createError, createData }] = useMutation(CREATE_CHARACTER)
+    const [editCharacter, { editError, editData }] = useMutation(EDIT_CHARACTER)
+    console.log(locationId)
+    useEffect(() => {
+        setActive(false)
+    }, initialState.name == null
+    )
     const handleChange = (event) => {
         // console.log(event.target)
         const { name, value } = event.target;
-        console.log(name, value)
-        console.log(typeof value)
         setFormState({
             ...formState,
             [name]: value,
         })
-        // console.log(formState)
-
-
-
+        console.log(formState)
     };
     const toggleEdit = () => {
         setActive(false)
     }
     const handleStatus = () => {
         const charStatus = document.getElementById("alive").checked
-        console.log(charStatus)
         setFormState({ ...formState, alive: charStatus })
-        console.log(formState)
     }
     const saveAlly = (event) => {
         event.preventDefault()
@@ -49,8 +47,33 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal }) => {
         const newNoteArray = [...formState.notes, ...newNote]
         setFormState({ ...formState, notes: newNoteArray })
     }
-    // note to self the modal updates, but the list outside of this does not, how traverse files?
+
     const saveCharacter = async (event) => {
+        event.preventDefault()
+        console.log(formState)
+
+        const { data } = await createCharacter({
+            variables: { locationId: locationId, ...formState }
+        })
+        console.log(data)
+        setFormState(data.editCharacter)
+        setActive(true)
+        setAllyField("none")
+        setNoteField("none")
+        const updatedCharacters = await allCharacters.map(char => {
+            if (char._id === formState._id) {
+                console.log("gottem")
+                return formState
+            }
+            return char
+        })
+
+        setAllChars(updatedCharacters)
+        setShowModal(false)
+        window.location.reload()
+    }
+    // note to self the modal updates, but the list outside of this does not, how traverse files?
+    const saveChanges = async (event) => {
         event.preventDefault()
         console.log(formState)
 
@@ -140,8 +163,14 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal }) => {
                 </div>
 
             </div>
-            <button onClick={saveCharacter}>Save</button>
-            <button onClick={toggleEdit} id='editBtn'>Edit</button>
+
+            {character.name == null ?
+                (<button onClick={saveCharacter}>Save</button>) :
+                (<>
+                    <button onClick={saveChanges}>Save</button>
+                    <button onClick={toggleEdit} id='editBtn'>Edit</button>
+                </>)}
+
         </>
     )
 }

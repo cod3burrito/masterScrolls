@@ -53,7 +53,7 @@ const typeDefs = gql`
         createLocation(campaignId: ID!, name: String!, details: String): Location
         editLocation(campaignId: ID!, locationId: ID!, name: String, details: String): Location
         deleteLocation(campaignId: ID!, locationId: ID!): Location
-        createCharacter(locationId: ID!, name: String!, class: String, level: String, goals: String, personality: String): Character
+        createCharacter(locationId: ID!, name: String!, class: String, level: String, goals: String, personality: String,allies:[String],notes:[String]): Character
         editCharacter(characterId: ID!, name: String, class: String, level: String, goals: String, personality: String, allies: [String], notes: [String]): Character
         deleteCharacter(locationId: ID!, characterId: ID!): Character
         login(username: String!, password: String!): Auth
