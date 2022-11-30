@@ -6,11 +6,13 @@ import Button from 'react-bootstrap/Button';
 import { useMutation } from '@apollo/client';
 import { EDIT_LOCATION } from '../../utils/mutations';
 import Modal from 'react-bootstrap/Modal';
+import { useParams } from 'react-router-dom';
 
 const LocationList = ({ locations }) => {
-    const [edit] = useMutation( EDIT_LOCATION)
+    const [edit] = useMutation(EDIT_LOCATION)
     const [showModal, setShowModal] = useState(false);
     const [stateLocation, setStateLocation] = useState({name: "", details: "", _id: ""})
+    const { campaignId: campaignParam } = useParams();
 
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
@@ -23,6 +25,29 @@ const LocationList = ({ locations }) => {
             [name]: value
         })
     })
+
+    const editLocation = async () => {
+        try{
+            if(stateLocation.name){
+                const { name, details } = stateLocation;
+                console.log(name);
+                console.log(details)
+                const { data } = await edit({
+                    variables: {name, details, locationId: stateLocation._id, campaignId: campaignParam }
+                });
+                
+
+                // setStateLocation({
+                //     name: data.editLocation.name,
+                //     details: data.editLocation.details
+                // })
+
+                handleClose();
+            }
+        }catch (err){
+            console.log(err);
+        }        
+    }
 
     if (!locations) {
         //this should be impossible since we have a default one made
@@ -37,7 +62,9 @@ const LocationList = ({ locations }) => {
                         <>
                         <div>
                             <h2>{location.name}</h2>
-                        <Button onClick={handleShow}>Edit Location</Button>
+                        <Button onClick={()=> {
+                            setStateLocation({name: location.name , details: location.details, _id: location._id})
+                            handleShow()}}>Edit Location</Button>
                         <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Location</Modal.Title>
@@ -56,21 +83,20 @@ const LocationList = ({ locations }) => {
                         />
                         <br></br>
 
-                        <p >Plot:</p>
+                        <p >Details:</p>
                         <input
                             className="form-input"
-                            placeholder="Campaign Plot"
+                            placeholder="Location Details"
                             name="details"
                             type="test"
-                            value={stateLocation.dis}
+                            value={stateLocation.details}
                             onChange={handleChange}
                             />
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={handleClose}>Close</Button>
-                    {edit ? (<Button onClick={editLocation}>Edit</Button>):
-                    (<Button onClick={createCampaign}>Save</Button>)}
+                    <Button onClick={editLocation}>Edit</Button>
                 </Modal.Footer>
             </Modal>
                             <Collapsible key={location._id} trigger={"View Characters"}>

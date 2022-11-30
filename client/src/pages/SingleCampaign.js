@@ -45,8 +45,7 @@ const SingleCampaign = () => {
                     variables: {campaignId: campaignParam, ...newLocation}
                 });
                 
-            
-    
+
                 setNewLocation({
                     name: "",
                     details: ""
