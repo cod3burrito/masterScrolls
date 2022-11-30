@@ -5,22 +5,21 @@ const Navbar = () => {
     return (
         <>
             <header>
-                <nav className='navbar navbar-expand-lg'>
-                    <Link className="navbar-brand" to="/">Home Page</Link>
+                <nav className='navbar navbar-expand-lg'>                    
                     <div id='navbarNav' style={{ marginLeft: "auto" }}>
                         <ul className="navbar-nav">
-                            <li className='nav-item'>
-                                <Link className="nav-link campaigns" to="/campaigns">Campaigns</Link>
+                            <li className="nav-item">
+                                <Link className="navbar-brand" to="/">Home Page</Link>
                             </li>
-                            (<li className="nav-item">
-                                <Link className="nav-link" to="/campaigns">Campaign Library</Link>
-                            </li>)
+                            <li className="nav-item">
+                                <Link className="navbar-brand" to="/campaigns">Campaign Library</Link>
+                            </li>
                             {Auth.loggedIn() ?
-                                (<li className="nav-item ">
-                                    <Link onClick={Auth.logout} className="nav-link" to="/">Logout</Link>
+                                (<li className="nav-item">
+                                    <Link onClick={Auth.logout} className="navbar-brand" to="/">Logout</Link>
                                 </li>) :
                                 (<li className="nav-item ">
-                                    <Link className="nav-link" to="/login">Login</Link>
+                                    <Link className="navbar-brand" to="/login">Login</Link>
                                 </li>)}
 
                         </ul>

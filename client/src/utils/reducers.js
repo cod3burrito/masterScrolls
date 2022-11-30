@@ -1,4 +1,7 @@
-import { SAVE_USER } from './action';
+import { 
+    SAVE_USER,
+    ADD_CAMPAIGN
+ } from './action';
 
 export const reducer = (state, action) => {
     switch(action.type){
@@ -7,6 +10,12 @@ export const reducer = (state, action) => {
                 ...state,
                 ...action.payload
             }
-        }          
+        } 
+        case ADD_CAMPAIGN: {
+            return{
+                ...state,
+                campaigns: [action.payload, ...state.campaigns]
+            }
+        }        
     }
 }
