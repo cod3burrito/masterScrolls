@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import CharacterList from '../CharacterList'
 import Collapsible from 'react-collapsible'
 const LocationList = ({ locations }) => {
+    
     if (!locations) {
         //this should be impossible since we have a default one made
         return (<h3>No Locations in this campaign yet!</h3>)
