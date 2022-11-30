@@ -29,12 +29,11 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal }) => {
     const toggleEdit = () => {
         setActive(false)
     }
-    const handleStatus = (event) => {
-        event.preventDefault();
-        const charStatus = document.getElementById("alive").value
+    const handleStatus = () => {
+        const charStatus = document.getElementById("alive").checked
         console.log(charStatus)
         setFormState({ ...formState, alive: charStatus })
-        // console.log(formState)
+        console.log(formState)
     }
     const saveAlly = (event) => {
         event.preventDefault()
@@ -102,7 +101,7 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal }) => {
                     {/* make below the boolean not input */}
                     <div style={styles.padding}>
                         <label for="alive">Status</label>
-                        <input id="alive" name="alive" type="checkbox" value={formState.alive} disabled={isActive} onChange={handleStatus} />
+                        <input id="alive" name="alive" type="checkbox" checked={formState.alive} disabled={isActive} onChange={handleStatus} />
                     </div>
                     <div style={styles.padding}>
                         <label for="goals"> Goals:</label>
