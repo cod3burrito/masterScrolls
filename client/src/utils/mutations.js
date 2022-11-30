@@ -44,3 +44,12 @@ export const CREATE_CAMPAIGN = gql`
     }
   }
 `
+export const CREATE_LOCATION = gql`
+mutation CreateLocation($name: String!, $details: String) {
+  createLocation(name: $name, details: $details) {
+    details
+    name
+    _id
+  }
+}
+`
