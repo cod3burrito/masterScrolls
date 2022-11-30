@@ -35,3 +35,12 @@ mutation CreateUser($username: String!, $email: String!, $password: String!) {
     }
   }
 `
+export const CREATE_CAMPAIGN = gql`
+  mutation createCampaign($name: String!, $plot: String) {
+    createCampaign(name: $name, plot: $plot) {
+      _id
+      name
+      plot
+    }
+  }
+`
