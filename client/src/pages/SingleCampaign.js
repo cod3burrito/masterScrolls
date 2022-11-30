@@ -12,12 +12,12 @@ import { ADD_CAMPAIGN } from '../utils/action';
 
 const SingleCampaign = () => {
     const { user, setUser } = useContext(UserContext);
-    const [show, setShow] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const { campaignId: campaignParam } = useParams();
     const [create] = useMutation(CREATE_LOCATION);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleClose = () => setShowModal(false);
+    const handleShow = () => setShowModal(true);
 
     const [newLocation, setNewLocation] = useState({name: "", details: ""})
     const { loading, data } = useQuery(
@@ -44,11 +44,11 @@ const SingleCampaign = () => {
                 const { data } = await create({
                     variables: {...newLocation}
                 });
-
+                console.log("hello")
                 const payload = {
                     name: data.createLocation.name,
                     details: data.createLocation.details,
-                    _id: data.createCampaign._id,
+                    _id: data.createLocation._id,
                 };
 
                 setUser({
@@ -76,7 +76,7 @@ const SingleCampaign = () => {
             <h1>{campaign.name}</h1>
             <LocationList locations={campaign.locations} />
             <Button onClick={handleShow}>New Location</Button>
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>New Location</Modal.Title>
                 </Modal.Header>
