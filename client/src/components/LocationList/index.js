@@ -12,7 +12,7 @@ const LocationList = ({ locations }) => {
     const [edit] = useMutation(EDIT_LOCATION)
     const [deleteState] = useMutation(DELETE_LOCATION);
     const [showModal, setShowModal] = useState(false);
-    const [stateLocation, setStateLocation] = useState({name: "", details: "", _id: ""})
+    const [stateLocation, setStateLocation] = useState({ name: "", details: "", _id: "" })
     const { campaignId: campaignParam } = useParams();
 
     const handleClose = () => setShowModal(false);
@@ -28,15 +28,15 @@ const LocationList = ({ locations }) => {
     })
 
     const editLocation = async () => {
-        try{
-            if(stateLocation.name){
+        try {
+            if (stateLocation.name) {
                 const { name, details } = stateLocation;
                 console.log(name);
                 console.log(details)
                 const { data } = await edit({
-                    variables: {name, details, locationId: stateLocation._id, campaignId: campaignParam }
+                    variables: { name, details, locationId: stateLocation._id, campaignId: campaignParam }
                 });
-                
+
 
                 // setStateLocation({
                 //     name: data.editLocation.name,
@@ -45,9 +45,9 @@ const LocationList = ({ locations }) => {
 
                 handleClose();
             }
-        }catch (err){
+        } catch (err) {
             console.log(err);
-        }        
+        }
     }
 
     const deleteLocation = async (id) => {
@@ -99,28 +99,28 @@ const LocationList = ({ locations }) => {
                         />
                         <br></br>
 
-                        <p >Details:</p>
-                        <input
-                            className="form-input"
-                            placeholder="Location Details"
-                            name="details"
-                            type="test"
-                            value={stateLocation.details}
-                            onChange={handleChange}
-                            />
-                    </form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={handleClose}>Close</Button>
-                    <Button onClick={editLocation}>Edit</Button>
-                </Modal.Footer>
-            </Modal>
-                            <Collapsible key={location._id} trigger={"View Characters"}>
-                                <ul className='list-group list-group-flush'>
-                                    <CharacterList characters={location.characters} />
-                                </ul>
-                            </Collapsible>
-                        </div>   
+                                            <p >Details:</p>
+                                            <input
+                                                className="form-input"
+                                                placeholder="Location Details"
+                                                name="details"
+                                                type="test"
+                                                value={stateLocation.details}
+                                                onChange={handleChange}
+                                            />
+                                        </form>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button onClick={handleClose}>Close</Button>
+                                        <Button onClick={editLocation}>Edit</Button>
+                                    </Modal.Footer>
+                                </Modal>
+                                <Collapsible key={location._id} trigger={"View Characters"}>
+                                    <ul className='list-group list-group-flush'>
+                                        <CharacterList locationId={location._id} characters={location.characters} />
+                                    </ul>
+                                </Collapsible>
+                            </div>
                         </>
                     )
                 })}
