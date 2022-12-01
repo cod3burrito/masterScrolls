@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { ADD_CAMPAIGN, UPDATE_CAMPAIGN, REMOVE_CAMPAIGN } from '../utils/action'
-// import videoBG from '../assets/Comp 1.mp4'
 
 function Campaigns() {
     const { user, setUser } = useContext(UserContext);

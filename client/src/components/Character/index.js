@@ -3,6 +3,7 @@ import { useMutation } from '@apollo/client'
 import UserContext from '../../utils/UserContext'
 import { EDIT_CHARACTER, CREATE_CHARACTER, DELETE_CHARACTER } from '../../utils/mutations'
 import { Navigate, useParams } from 'react-router-dom'
+
 //have check to see if the person viewing is the owner or not using Auth and global state
 const Character = ({ character, allCharacters, setAllChars, setShowModal, locationId }) => {
     // console.log()
