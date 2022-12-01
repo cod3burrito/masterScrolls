@@ -1,6 +1,8 @@
 html body #root{
   height: 100vh;
   background-color: #BB7A3A;
+  background-image: url(./assets/oldpaper.jpg);
+  background-repeat: no-repeat;
 }
 
 body {
