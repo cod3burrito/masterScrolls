@@ -94,13 +94,13 @@ const resolvers = {
         },
         createLocation: async (parents, { campaignId, name, details }, context) => {
             if (context.user) {
-                const newLocation = await Location.create({ name, details });
-                const updateCampaign = await Campaign.findByIdAndUpdate(
-                    { _id: campaignId },
-                    { $push: { locations: newLocation._id } },
+            const newLocation = await Location.create({ name, details });
+            const updateCampaign = await Campaign.findByIdAndUpdate(
+                { _id: campaignId },
+                { $push: { locations: newLocation._id } },
 
-                )
-                return newLocation;
+            )
+            return newLocation;
             }
         },
         editLocation: async (parent, { locationId, name, details }, context) => {
@@ -116,14 +116,14 @@ const resolvers = {
         },
         deleteLocation: async (parents, { campaignId, locationId }, context) => {
             if (context.user) {
-                const deleteLocation = await Location.findByIdAndDelete(
-                    { _id: locationId }
-                )
-                const updatedCampaign = await User.findByIdAndUpdate(
-                    { _id: campaignId },
-                    { $pull: { locations: locationId } }
-                )
-                return  deleteLocation 
+            const deleteLocation = await Location.findByIdAndDelete(
+                { _id: locationId }
+            )
+            const updatedCampaign = await User.findByIdAndUpdate(
+                { _id: campaignId },
+                { $pull: { locations: locationId } }
+            )
+            return deleteLocation;
             }
         },
         createCharacter: async (parent, args) => {

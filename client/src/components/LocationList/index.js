@@ -15,7 +15,6 @@ const LocationList = ({ allLocations, setAllLocations }) => {
     const [stateLocation, setStateLocation] = useState({ name: "", details: "", _id: "" })
 
     const { campaignId: campaignParam } = useParams();
-
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
 
@@ -32,8 +31,7 @@ const LocationList = ({ allLocations, setAllLocations }) => {
         try {
             if (stateLocation.name) {
                 const { name, details } = stateLocation;
-                console.log(name);
-                console.log(details)
+
                 const { data } = await edit({
                     variables: { name, details, locationId: stateLocation._id, campaignId: campaignParam }
                 });
@@ -45,10 +43,6 @@ const LocationList = ({ allLocations, setAllLocations }) => {
                     }
                 })
                 setAllLocations(updatedLocations)
-                // setStateLocation({
-                //     name: data.editLocation.name,
-                //     details: data.editLocation.details
-                // })
 
                 handleClose();
             }
@@ -60,9 +54,11 @@ const LocationList = ({ allLocations, setAllLocations }) => {
     const deleteLocation = async (id) => {
         try {
             const { data } = await deleteState({
-                variables: { locationId: id, campaignId: campaignParam }
+                variables: { campaignId: campaignParam, locationId: id }
             })
+            const updatedLocations = await allLocations.filter((location) => location._id !== id)
 
+            setAllLocations(updatedLocations)
 
         } catch (err) {
             console.log(err);
@@ -72,7 +68,6 @@ const LocationList = ({ allLocations, setAllLocations }) => {
         //this should be impossible since we have a default one made
         return (<h3>No Locations in this campaign yet!</h3>)
     }
-    console.log(allLocations)
     return (
         <>
             <div className='d-flex flex-wrap'>
