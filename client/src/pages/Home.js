@@ -1,8 +1,14 @@
 import React from 'react'
+import Eevee from './Background.js'
+import Pretty from './style/home.css'
 
-const Home = () => { return (
-        <div className='welcome'><h1> Welcome, mortal! </h1>
-        <p> Please identify yourself in our ranks or request to join us. See the appropriate links above. </p></div>
+function Home() {
+    return (
+        <div className='joseph'><Eevee></Eevee>
+            <div className='welcome' style={Pretty}><h1> Welcome, mortal! </h1>
+        <p> Please identify yourself in our ranks or request to join us. See the appropriate links above.</p></div>
+        </div>
+        
     )
 }
 
