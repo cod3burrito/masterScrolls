@@ -17,7 +17,6 @@ const LocationList = ({ allLocations, setAllLocations }) => {
     const [stateLocation, setStateLocation] = useState({ name: "", details: "", _id: "" })
     const { user } = useContext(UserContext)
     const globalCampaigns = user.campaigns
-    // const currentCampaign = useParams()
     const { campaignId: campaignParam } = useParams();
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
@@ -30,6 +29,7 @@ const LocationList = ({ allLocations, setAllLocations }) => {
             [name]: value
         })
     })
+
 
     const editLocation = async () => {
         try {
@@ -57,10 +57,8 @@ const LocationList = ({ allLocations, setAllLocations }) => {
 
     const deleteLocation = async (chars, id) => {
         try {
-            console.log("deleting")
-            console.log(chars)
+
             chars.forEach(async (char) => {
-                // console.log(char._id)
                 await deleteChar({
                     variables: { locationId: id, characterId: char._id }
                 }
@@ -77,9 +75,30 @@ const LocationList = ({ allLocations, setAllLocations }) => {
             console.log(err);
         }
     }
+    const setLabel = (event) => {
+        if (event.target.textContent == "View Characters") {
+            event.target.textContent = "Hide Characters"
+        } else {
+            event.target.textContent = "View Characters"
+        }
+    }
     if (!allLocations) {
         //this should be impossible since we have a default one made
         return (<h3>No Locations in this campaign yet!</h3>)
+    }
+    const styles = {
+        button: {
+            backgroundColor: "#C19AB9",
+            padding: ".25%",
+            margin: ".5%",
+            width: "7.5rem",
+            border: "0px",
+            color: "#140600"
+        },
+        card: {
+            backgroundColor: "#F1D6B8",
+            width: "18rem"
+        }
     }
     return (
         <>
@@ -87,7 +106,7 @@ const LocationList = ({ allLocations, setAllLocations }) => {
                 {allLocations.map((location) => {
                     return (
                         <>
-                            <div className="card m-2 align-items-center border border-dark" style={{ width: "18rem" }}>
+                            <div className="card m-2 d-flex align-items-center border border-dark" style={styles.card}>
                                 <h2>{location.name}</h2>
                                 <p>{location.details}</p>
                                 <div>
@@ -95,11 +114,11 @@ const LocationList = ({ allLocations, setAllLocations }) => {
                                         if (campaign._id === campaignParam) {
                                             return (
                                                 <>
-                                                    <Button size="sm" className="mx-2 rounded-pill" style={{ width: "7rem" }} onClick={() => {
+                                                    <Button size="sm" className="mx-2 rounded-pill" style={styles.button} onClick={() => {
                                                         setStateLocation({ name: location.name, details: location.details, _id: location._id })
                                                         handleShow()
                                                     }}>Edit Location</Button>
-                                                    <Button size="sm" className="mx-2 rounded-pill" onClick={() => {
+                                                    <Button size="sm" className="mx-2 rounded-pill" style={styles.button} onClick={() => {
                                                         deleteLocation(location.characters, location._id);
                                                     }}>Delete Location</Button>
                                                 </>
@@ -145,11 +164,13 @@ const LocationList = ({ allLocations, setAllLocations }) => {
                                         <Button onClick={editLocation}>Edit</Button>
                                     </Modal.Footer>
                                 </Modal>
-                                <Collapsible key={location._id} trigger={"View Characters"}>
-                                    <ul className='list-group list-group-flush'>
-                                        <CharacterList locationId={location._id} characters={location.characters} />
-                                    </ul>
-                                </Collapsible>
+                                <div onClick={setLabel} style={{ display: "flex", flexDirection: "column" }}>
+                                    <Collapsible style={{ textAlign: "center" }} key={location._id} trigger={"View Characters"}>
+                                        <ul className='list-group list-group-flush'>
+                                            <CharacterList locationId={location._id} characters={location.characters} />
+                                        </ul>
+                                    </Collapsible>
+                                </div>
                             </div>
                         </>
                     )

@@ -25,29 +25,36 @@ const CharacterList = ({ locationId, characters }) => {
             backgroundColor: "gray",
             textDecoration: "line-through",
             margin: ".25%"
-        }
+        },
+        button: {
+            backgroundColor: "#C19AB9",
+            padding: ".25%",
+            margin: ".5%",
+            marginTop: "5%",
+            width: "7.5rem",
+            border: "0px",
+            color: "#140600"
+        },
     }
     return (
         <>
             {allCharacters.map((character) => {
                 return (<>
                     {character.alive ? (
-                        <button className='list-group-item' style={styles.alive} onClick={() => {
+                        <button className='list-group-item mx-2 rounded-pill' style={styles.alive} onClick={() => {
                             const data = { ...character }
                             setCurrentCharacter(data)
                             console.log(currentCharacter)
                             setShowModal(true)
-                        }} key={character._id} to={`/characters/${character._id}`}>
-                            {/* <li style={styles.alive} className='list-group-item'>{character.name}</li> */}
+                        }} key={character._id} >
                             {character.name}
                         </button>) : (
-                        <button className='list-group-item' style={styles.inactive} onClick={() => {
+                        <button className='list-group-item mx-2 rounded-pill' style={styles.inactive} onClick={() => {
                             const data = { ...character }
                             setCurrentCharacter(data)
                             console.log(currentCharacter)
                             setShowModal(true)
-                        }} key={character._id} to={`/characters/${character._id}`}>
-                            {/* <li style={styles.inactive} className='list-group-item'>{character.name}</li> */}
+                        }} key={character._id} >
                             {character.name}
                         </button>)}
                 </>
@@ -56,7 +63,7 @@ const CharacterList = ({ locationId, characters }) => {
             {globalCampaigns.map(campaign => {
                 if (campaign._id === currentCampaign.campaignId) {
                     return (
-                        <Button onClick={() => {
+                        <Button className="mx-2 rounded-pill" style={styles.button} onClick={() => {
                             setCurrentCharacter({
                                 name: null,
                                 alive: true,
@@ -79,7 +86,7 @@ const CharacterList = ({ locationId, characters }) => {
                 show={showModal}
                 onHide={() => setShowModal(false)}
                 aria-labelledby="character-modal" >
-                <Character locationId={locationId} setShowModal={setShowModal} allCharacters={allCharacters} setAllChars={setAllChars} character={currentCharacter} />
+                < Character locationId={locationId} setShowModal={setShowModal} allCharacters={allCharacters} setAllChars={setAllChars} character={currentCharacter} />
             </Modal>
         </>
     )
