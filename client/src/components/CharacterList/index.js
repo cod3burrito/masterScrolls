@@ -8,6 +8,8 @@ const CharacterList = ({ locationId, characters }) => {
     const [showModal, setShowModal] = useState(false)
     const [currentCharacter, setCurrentCharacter] = useState('')
     const [allCharacters, setAllChars] = useState(characters)
+
+    console.log(allCharacters)
     if (!characters) {
         return (<h3> No characters found in this location!</h3>)
     }
