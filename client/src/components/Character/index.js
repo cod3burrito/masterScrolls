@@ -3,6 +3,8 @@ import { useMutation } from '@apollo/client'
 import UserContext from '../../utils/UserContext'
 import { EDIT_CHARACTER, CREATE_CHARACTER, DELETE_CHARACTER } from '../../utils/mutations'
 import { Navigate, useParams } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 //have check to see if the person viewing is the owner or not using Auth and global state
 const Character = ({ character, allCharacters, setAllChars, setShowModal, locationId }) => {
     // console.log()
@@ -97,7 +99,8 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
         setShowModal(false)
     }
     const removeAlly = async (event) => {
-        const targetAlly = parseInt(event.target.dataset.allynum)
+        const targetAlly = parseInt(event.target.parentElement.dataset.allyNum)
+        console.log(targetAlly)
         const updatedAllies = await formState.allies.filter((ally, index) =>
             index !== targetAlly
         )
@@ -105,8 +108,8 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
     }
     const removeNote = async (event) => {
 
-        const targetNote = event.target.dataset.notenum
-        const updatedNotes = await formState.notes.filter((ally, index) =>
+        const targetNote = event.target.parentElement.dataset.noteNum
+        const updatedNotes = await formState.notes.filter((note, index) =>
             index != targetNote
         )
         setFormState({ ...formState, notes: [...updatedNotes] })
@@ -153,9 +156,16 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
                     <p> Allies:</p>
                     <ul>
                         {formState.allies.map((ally, index) => {
-                            return (
-                                <li><input value={ally} disabled={isActive} onChange={handleChange} /><button data-allyNum={index} disabled={isActive} onClick={removeAlly}>Remove Ally</button></li>
-                            )
+                            if (isActive) {
+                                return (
+                                    < li ><input value={ally} disabled={isActive} onChange={handleChange} /></li>
+                                )
+                            } else {
+                                return (
+
+                                    < li ><input value={ally} disabled={isActive} onChange={handleChange} /><FontAwesomeIcon style={{ cursor: "pointer" }} data-allyNum={index} onClick={removeAlly} icon={faTrashCan} /></li>
+                                )
+                            }
                         })}
                     </ul>
                     <button disabled={isActive} onClick={addAlly} id='allyBtn'>Add Ally</button>
@@ -167,9 +177,15 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
                     <p> Notes:</p>
                     <ul>
                         {formState.notes.map((note, index) => {
-                            return (
-                                <li> <input value={note} disabled={isActive} onChange={handleChange} /><button data-noteNum={index} disabled={isActive} onClick={removeNote}>Remove Note</button></li>
-                            )
+                            if (isActive) {
+                                return (
+                                    <li> <input value={note} disabled={isActive} onChange={handleChange} /></li>
+                                )
+                            } else {
+                                return (
+                                    <li> <input value={note} disabled={isActive} onChange={handleChange} /><FontAwesomeIcon style={{ cursor: "pointer" }} data-noteNum={index} onClick={removeNote} icon={faTrashCan} /></li>
+                                )
+                            }
                         })}
                     </ul>
                     <button disabled={isActive} id="noteBtn" onClick={addNote}>Add more notes</button>
@@ -182,27 +198,27 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
 
             </div>
 
-            {character.name == null ?
-                (<button onClick={saveCharacter}>Save</button>) :
-                (<>
+            {
+                character.name == null ?
+                    (<button onClick={saveCharacter}>Save</button>) :
+                    (<>
 
-                    {globalCampaigns.map(campaign => {
-                        if (campaign._id === currentCampaign.campaignId) {
-                            console.log(campaign._id)
-                            console.log(currentCampaign.campaignId)
-                            return (
-                                <>
-                                    <button onClick={saveChanges}>Save</button>
-                                    <button onClick={toggleEdit} id='editBtn'>Edit</button>
-                                    <button onClick={deleteChar}>Delete</button>
-                                </>
-                            )
-                        } else {
-                            return (<></>)
-                        }
-                    })}
+                        {globalCampaigns.map(campaign => {
+                            if (campaign._id === currentCampaign.campaignId) {
+                                return (
+                                    <>
+                                        <button onClick={saveChanges}>Save</button>
+                                        <button onClick={toggleEdit} id='editBtn'>Edit</button>
+                                        <button onClick={deleteChar}>Delete</button>
+                                    </>
+                                )
+                            } else {
+                                return (<></>)
+                            }
+                        })}
 
-                </>)}
+                    </>)
+            }
 
         </>
     )
