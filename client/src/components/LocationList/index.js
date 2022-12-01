@@ -4,12 +4,13 @@ import CharacterList from '../CharacterList'
 import Collapsible from 'react-collapsible'
 import Button from 'react-bootstrap/Button';
 import { useMutation } from '@apollo/client';
-import { EDIT_LOCATION } from '../../utils/mutations';
+import { EDIT_LOCATION, DELETE_LOCATION } from '../../utils/mutations';
 import Modal from 'react-bootstrap/Modal';
 import { useParams } from 'react-router-dom';
 
 const LocationList = ({ locations }) => {
     const [edit] = useMutation(EDIT_LOCATION)
+    const [deleteState] = useMutation(DELETE_LOCATION);
     const [showModal, setShowModal] = useState(false);
     const [stateLocation, setStateLocation] = useState({name: "", details: "", _id: ""})
     const { campaignId: campaignParam } = useParams();
@@ -49,6 +50,18 @@ const LocationList = ({ locations }) => {
         }        
     }
 
+    const deleteLocation = async (id) => {
+        try{
+            const { data } = await deleteState({
+                variables: {locationId: id, campaignId: campaignParam}
+            })
+
+
+        }catch (err){
+            console.log(err);
+        }
+    }
+
     if (!locations) {
         //this should be impossible since we have a default one made
         return (<h3>No Locations in this campaign yet!</h3>)
@@ -65,6 +78,9 @@ const LocationList = ({ locations }) => {
                         <Button onClick={()=> {
                             setStateLocation({name: location.name , details: location.details, _id: location._id})
                             handleShow()}}>Edit Location</Button>
+                            <Button onClick={() => {                            
+                            deleteLocation(location._id);
+                        }}>Delete Location</Button>
                         <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Location</Modal.Title>
