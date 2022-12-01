@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
-import { EDIT_CHARACTER, CREATE_CHARACTER } from '../../utils/mutations'
+import { EDIT_CHARACTER, CREATE_CHARACTER, DELETE_CHARACTER } from '../../utils/mutations'
 import { Navigate } from 'react-router-dom'
+//have check to see if the person viewing is the owner or not using Auth and global state
 const Character = ({ character, allCharacters, setAllChars, setShowModal, locationId }) => {
     // console.log(allCharacters)
     const initialState = { ...character }
-    console.log(initialState)
+    console.log(initialState.name)
     const [formState, setFormState] = useState(initialState)
-    const [isActive, setActive] = useState(true)
+    let initialStatus;
+
+    if (initialState.name == null) {
+        initialStatus = false
+    } else {
+        initialStatus = true
+    }
+    const [isActive, setActive] = useState(initialStatus)
     const [AllyField, setAllyField] = useState("none")
     const [NoteField, setNoteField] = useState('none')
     const [createCharacter, { createError, createData }] = useMutation(CREATE_CHARACTER)
     const [editCharacter, { editError, editData }] = useMutation(EDIT_CHARACTER)
+    const [deleteCharacter, { deleteError, deleteData }] = useMutation(DELETE_CHARACTER)
     console.log(locationId)
-    useEffect(() => {
-        setActive(false)
-    }, initialState.name == null
-    )
+
     const handleChange = (event) => {
         // console.log(event.target)
         const { name, value } = event.target;
@@ -24,7 +30,6 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
             ...formState,
             [name]: value,
         })
-        console.log(formState)
     };
     const toggleEdit = () => {
         setActive(false)
@@ -47,7 +52,12 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
         const newNoteArray = [...formState.notes, ...newNote]
         setFormState({ ...formState, notes: newNoteArray })
     }
-
+    const addAlly = () => {
+        setAllyField("block")
+    }
+    const addNote = () => {
+        setNoteField("block")
+    }
     const saveCharacter = async (event) => {
         event.preventDefault()
         console.log(formState)
@@ -55,22 +65,15 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
         const { data } = await createCharacter({
             variables: { locationId: locationId, ...formState }
         })
-        console.log(data)
-        setFormState(data.editCharacter)
+        console.log(data.createCharacter)
+        setFormState(data.createCharacter)
         setActive(true)
+        console.log(formState)
+        console.log(allCharacters)
         setAllyField("none")
         setNoteField("none")
-        const updatedCharacters = await allCharacters.map(char => {
-            if (char._id === formState._id) {
-                console.log("gottem")
-                return formState
-            }
-            return char
-        })
-
-        setAllChars(updatedCharacters)
+        setAllChars([...allCharacters, { ...formState }])
         setShowModal(false)
-        window.location.reload()
     }
     // note to self the modal updates, but the list outside of this does not, how traverse files?
     const saveChanges = async (event) => {
@@ -96,12 +99,38 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
         setAllChars(updatedCharacters)
         setShowModal(false)
     }
-    const addAlly = () => {
-        setAllyField("block")
-    }
-    const addNote = () => {
-        setNoteField("block")
+    const removeAlly = async (event) => {
 
+        console.log(event.target)
+        const targetAlly = event.target.dataset.allynum
+        console.log(targetAlly)
+        console.log(formState.allies)
+        const updatedAllies = await formState.allies.filter((ally, index) =>
+            index != targetAlly
+        )
+        console.log(updatedAllies)
+        setFormState({ ...formState, allies: [...updatedAllies] })
+    }
+    const removeNote = async (event) => {
+
+        console.log(event.target)
+        const targetNote = event.target.dataset.notenum
+        const updatedNotes = await formState.notes.filter((ally, index) =>
+            index != targetNote
+        )
+        console.log(updatedNotes)
+        setFormState({ ...formState, notes: [...updatedNotes] })
+    }
+    const deleteChar = async () => {
+        const { data } = await deleteCharacter({
+            variables: { locationId: locationId, characterId: formState._id }
+        })
+        console.log(allCharacters)
+        const updatedCharacters = await allCharacters.filter((char) => char._id !== formState._id)
+
+        // console.log(updatedCharacters)
+        setAllChars(updatedCharacters)
+        setShowModal(false)
     }
     const styles = {
         padding: {
@@ -133,9 +162,9 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
                     <br></br>
                     <p> Allies:</p>
                     <ul>
-                        {formState.allies.map((ally) => {
+                        {formState.allies.map((ally, index) => {
                             return (
-                                <li><input value={ally} disabled={isActive} onChange={handleChange} /></li>
+                                <li><input value={ally} disabled={isActive} onChange={handleChange} /><button data-allyNum={index} onClick={removeAlly}>Remove Ally</button></li>
                             )
                         })}
                     </ul>
@@ -148,9 +177,9 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
                     </div>
                     <p> Notes:</p>
                     <ul>
-                        {formState.notes.map((note) => {
+                        {formState.notes.map((note, index) => {
                             return (
-                                <li> <input value={note} disabled={isActive} onChange={handleChange} /></li>
+                                <li> <input value={note} disabled={isActive} onChange={handleChange} /><button data-noteNum={index} onClick={removeNote}>Remove Note</button></li>
                             )
                         })}
                     </ul>
@@ -169,6 +198,7 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
                 (<>
                     <button onClick={saveChanges}>Save</button>
                     <button onClick={toggleEdit} id='editBtn'>Edit</button>
+                    <button onClick={deleteChar}>Delete</button>
                 </>)}
 
         </>
