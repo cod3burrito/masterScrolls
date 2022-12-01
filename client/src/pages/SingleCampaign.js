@@ -70,13 +70,13 @@ const SingleCampaign = () => {
         return <div>Loading...</div>;
     }
     return (
-        <div className="newLocation">
-            <h1>{campaign.name}</h1>
+        <div className="newLocation d-flex flex-column justify-content-center">
+            <h1 className="text-center">{campaign.name}</h1>
             <LocationList allLocations={allLocations} setAllLocations={setAllLocations} />
             {globalCampaigns.map(campaign => {
                 if (campaign._id === campaignParam) {
                     return (
-                        <Button onClick={handleShow}>New Location</Button>
+                        <Button onClick={handleShow} className="align-self-center" style={{ width: "18rem" }}>New Location</Button>
                     )
                 } else {
                     return (<></>)

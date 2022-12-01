@@ -83,11 +83,11 @@ const LocationList = ({ allLocations, setAllLocations }) => {
     }
     return (
         <>
-            <div className='d-flex flex-wrap'>
+            <div className='d-flex flex-wrap justify-content-center'>
                 {allLocations.map((location) => {
                     return (
                         <>
-                            <div className="card m-2 d-flex align-items-center border border-dark" style={{ width: "18rem" }}>
+                            <div className="card m-2 align-items-center border border-dark" style={{ width: "18rem" }}>
                                 <h2>{location.name}</h2>
                                 <p>{location.details}</p>
                                 <div>
