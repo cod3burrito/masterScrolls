@@ -128,7 +128,9 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
     return (
         <>
             <div className='card'>
-                <h2 className='card-header'> <input name="name" type="text" value={formState.name} disabled={isActive} onChange={handleChange} /></h2>
+                <div>
+                    <h2 className='card-header'> <input name="name" type="text" value={formState.name} disabled={isActive} onChange={handleChange} /></h2>
+                </div>
                 <div className='card-body' >
                     <div style={styles.padding}>
                         <label for="class">Class:</label>
