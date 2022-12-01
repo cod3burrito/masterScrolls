@@ -1,30 +1,39 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useMutation } from '@apollo/client'
-import { EDIT_CHARACTER, CREATE_CHARACTER } from '../../utils/mutations'
-import { Navigate } from 'react-router-dom'
+import UserContext from '../../utils/UserContext'
+import { EDIT_CHARACTER, CREATE_CHARACTER, DELETE_CHARACTER } from '../../utils/mutations'
+import { Navigate, useParams } from 'react-router-dom'
+//have check to see if the person viewing is the owner or not using Auth and global state
 const Character = ({ character, allCharacters, setAllChars, setShowModal, locationId }) => {
-    // console.log(allCharacters)
+    // console.log()
+    const { user } = useContext(UserContext)
+    // console.log(user.campaigns)
+    const globalCampaigns = user.campaigns
+    const currentCampaign = useParams()
+    // console.log(currentCampaign)
+
     const initialState = { ...character }
-    console.log(initialState)
     const [formState, setFormState] = useState(initialState)
-    const [isActive, setActive] = useState(true)
+    let initialStatus;
+
+    if (initialState.name == null) {
+        initialStatus = false
+    } else {
+        initialStatus = true
+    }
+    const [isActive, setActive] = useState(initialStatus)
     const [AllyField, setAllyField] = useState("none")
     const [NoteField, setNoteField] = useState('none')
     const [createCharacter, { createError, createData }] = useMutation(CREATE_CHARACTER)
     const [editCharacter, { editError, editData }] = useMutation(EDIT_CHARACTER)
-    console.log(locationId)
-    useEffect(() => {
-        setActive(false)
-    }, initialState.name == null
-    )
+    const [deleteCharacter, { deleteError, deleteData }] = useMutation(DELETE_CHARACTER)
+
     const handleChange = (event) => {
-        // console.log(event.target)
         const { name, value } = event.target;
         setFormState({
             ...formState,
             [name]: value,
         })
-        console.log(formState)
     };
     const toggleEdit = () => {
         setActive(false)
@@ -47,47 +56,38 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
         const newNoteArray = [...formState.notes, ...newNote]
         setFormState({ ...formState, notes: newNoteArray })
     }
-
+    const addAlly = () => {
+        setAllyField("block")
+    }
+    const addNote = () => {
+        setNoteField("block")
+    }
     const saveCharacter = async (event) => {
         event.preventDefault()
-        console.log(formState)
 
         const { data } = await createCharacter({
             variables: { locationId: locationId, ...formState }
         })
-        console.log(data)
-        setFormState(data.editCharacter)
+        setFormState(data.createCharacter)
         setActive(true)
         setAllyField("none")
         setNoteField("none")
-        const updatedCharacters = await allCharacters.map(char => {
-            if (char._id === formState._id) {
-                console.log("gottem")
-                return formState
-            }
-            return char
-        })
-
-        setAllChars(updatedCharacters)
+        setAllChars([...allCharacters, { ...formState }])
         setShowModal(false)
-        window.location.reload()
     }
     // note to self the modal updates, but the list outside of this does not, how traverse files?
     const saveChanges = async (event) => {
         event.preventDefault()
-        console.log(formState)
 
         const { data } = await editCharacter({
             variables: { characterId: formState._id, ...formState }
         })
-        console.log(data)
         // setFormState(data.editCharacter)
         setActive(true)
         setAllyField("none")
         setNoteField("none")
         const updatedCharacters = await allCharacters.map(char => {
             if (char._id === formState._id) {
-                console.log("gottem")
                 return formState
             }
             return char
@@ -96,12 +96,29 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
         setAllChars(updatedCharacters)
         setShowModal(false)
     }
-    const addAlly = () => {
-        setAllyField("block")
+    const removeAlly = async (event) => {
+        const targetAlly = parseInt(event.target.dataset.allynum)
+        const updatedAllies = await formState.allies.filter((ally, index) =>
+            index !== targetAlly
+        )
+        setFormState({ ...formState, allies: [...updatedAllies] })
     }
-    const addNote = () => {
-        setNoteField("block")
+    const removeNote = async (event) => {
 
+        const targetNote = event.target.dataset.notenum
+        const updatedNotes = await formState.notes.filter((ally, index) =>
+            index != targetNote
+        )
+        setFormState({ ...formState, notes: [...updatedNotes] })
+    }
+    const deleteChar = async () => {
+        const { data } = await deleteCharacter({
+            variables: { locationId: locationId, characterId: formState._id }
+        })
+        const updatedCharacters = await allCharacters.filter((char) => char._id !== formState._id)
+
+        setAllChars(updatedCharacters)
+        setShowModal(false)
     }
     const styles = {
         padding: {
@@ -111,7 +128,9 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
     return (
         <>
             <div className='card'>
-                <h2 className='card-header'> <input name="name" type="text" value={formState.name} disabled={isActive} onChange={handleChange} /></h2>
+                <div>
+                    <h2 className='card-header'> <input name="name" type="text" value={formState.name} disabled={isActive} onChange={handleChange} /></h2>
+                </div>
                 <div className='card-body' >
                     <div style={styles.padding}>
                         <label for="class">Class:</label>
@@ -133,14 +152,13 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
                     <br></br>
                     <p> Allies:</p>
                     <ul>
-                        {formState.allies.map((ally) => {
+                        {formState.allies.map((ally, index) => {
                             return (
-                                <li><input value={ally} disabled={isActive} onChange={handleChange} /></li>
+                                <li><input value={ally} disabled={isActive} onChange={handleChange} /><button data-allyNum={index} disabled={isActive} onClick={removeAlly}>Remove Ally</button></li>
                             )
                         })}
                     </ul>
-                    {/* idea 1 give instructions to seperate by commas, then split */}
-                    <button onClick={addAlly} id='allyBtn'>Add Ally</button>
+                    <button disabled={isActive} onClick={addAlly} id='allyBtn'>Add Ally</button>
                     <div id="newAllyField" style={{ display: AllyField }}>
                         <label for="newAlly">If more than one Ally, please seperate with a comma</label>
                         <input id="newAllyInput" name="newAlly" ></input>
@@ -148,13 +166,13 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
                     </div>
                     <p> Notes:</p>
                     <ul>
-                        {formState.notes.map((note) => {
+                        {formState.notes.map((note, index) => {
                             return (
-                                <li> <input value={note} disabled={isActive} onChange={handleChange} /></li>
+                                <li> <input value={note} disabled={isActive} onChange={handleChange} /><button data-noteNum={index} disabled={isActive} onClick={removeNote}>Remove Note</button></li>
                             )
                         })}
                     </ul>
-                    <button id="noteBtn" onClick={addNote}>Add more notes</button>
+                    <button disabled={isActive} id="noteBtn" onClick={addNote}>Add more notes</button>
                     <div id="newNoteField" style={{ display: NoteField }}>
                         <label for="newNote">Please seperate each notw with a comma</label>
                         <input id="newNoteInput" name="newNote" ></input>
@@ -167,8 +185,23 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
             {character.name == null ?
                 (<button onClick={saveCharacter}>Save</button>) :
                 (<>
-                    <button onClick={saveChanges}>Save</button>
-                    <button onClick={toggleEdit} id='editBtn'>Edit</button>
+
+                    {globalCampaigns.map(campaign => {
+                        if (campaign._id === currentCampaign.campaignId) {
+                            console.log(campaign._id)
+                            console.log(currentCampaign.campaignId)
+                            return (
+                                <>
+                                    <button onClick={saveChanges}>Save</button>
+                                    <button onClick={toggleEdit} id='editBtn'>Edit</button>
+                                    <button onClick={deleteChar}>Delete</button>
+                                </>
+                            )
+                        } else {
+                            return (<></>)
+                        }
+                    })}
+
                 </>)}
 
         </>

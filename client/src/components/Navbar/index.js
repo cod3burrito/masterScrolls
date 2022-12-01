@@ -11,7 +11,7 @@ const Navbar = () => {
 
 
     const log = () => {
-        const {name, gender, race, desires, traits} = {...NPCs.generate().formattedData}
+        const {name, gender, race, desires, traits} = NPCs.generate().formattedData
         setRandomCharacter({
             name,
             gender,
@@ -71,19 +71,30 @@ const Navbar = () => {
             </header>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Random Character</Modal.Title>                   
+                    <Modal.Title>You Summoned</Modal.Title>                   
                 </Modal.Header>
                 <Modal.Body>
-                    <p>Name: {randomCharacter.name}</p>
-                    <p>Race: {randomCharacter.race}</p>
-                    <p>Gender: {randomCharacter.gender}</p>
-                    <p>Desires:</p>
-                    <ul>
-                        {randomCharacter.desires.map(desire => <li key={desire}>{desire}</li>)}
+                    <div className="d-flex justify-content-between">
+                        <div>
+                            <h5>Name</h5>
+                            <p>{randomCharacter.name}</p>        
+                        </div>
+                        <div>
+                            <h5>Race</h5>
+                            <p>{randomCharacter.race}</p>        
+                        </div>
+                        <div>
+                            <h5>Gender</h5>
+                            <p>{randomCharacter.gender}</p>       
+                        </div>                        
+                    </div>
+                    <h5 className="text-center mt-2">Desires</h5>
+                    <ul className="list-group">
+                        {randomCharacter.desires.map(desire => <li className="list-group-item" key={desire}>{desire}</li>)}
                     </ul>
-                    <p>Traits</p>
-                    <ul>
-                        {randomCharacter.traits.map(trait => <li key={trait}>{trait}</li>)}
+                    <h5 className="mt-2 text-center">Traits</h5>
+                    <ul className="list-group">
+                        {randomCharacter.traits.map(trait => <li className="list-group-item" key={trait}>{trait}</li>)}
                     </ul>
                 </Modal.Body>
                 <Modal.Footer>
