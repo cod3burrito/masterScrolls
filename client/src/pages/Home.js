@@ -1,6 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Eevee from './Background.js'
 import Pretty from './style/home.css'
+
+// useEffect(() => {
+//     const timer = setTimeoutconst timer = setTimeout(() => {
+//         setCount(timer);}, 4000);
+//         return () => clearTimeout(timer);
+// , [];)}
+
 
 function Home() {
     return (
@@ -10,6 +17,6 @@ function Home() {
         </div>
         
     )
-}
+};
 
 export default Home
