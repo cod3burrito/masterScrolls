@@ -15,21 +15,20 @@ const SingleCampaign = () => {
     const [showModal, setShowModal] = useState(false);
     const { campaignId: campaignParam } = useParams();
     const [create] = useMutation(CREATE_LOCATION);
-    
 
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
 
-    const [newLocation, setNewLocation] = useState({name: "", details: ""})
+    const [newLocation, setNewLocation] = useState({ name: "", details: "" })
     const { loading, data } = useQuery(
         QUERY_GETCAMPAIGN,
         {
             variables: { campaignId: campaignParam },
         });
     // const campaignObject = data?.getCampaign || [];
-    const campaign = data?.getCampaign || {};
-    const [allLocations, setAllLocations] = useState(campaign.locations);    
-    // setAllLocations(data.getCampaign.locations)
+    const campaign = data?.getCampaign || [];
+    const [allLocations, setAllLocations] = useState(campaign.locations)
+
     const handleChange = (event => {
         const name = event.target.name;
         const value = event.target.value;
@@ -40,13 +39,14 @@ const SingleCampaign = () => {
     })
 
     const createLocation = async () => {
-        try{
-            if(newLocation.name){
+        try {
+            if (newLocation.name) {
                 console.log("Got a name");
                 const { data } = await create({
-                    variables: {campaignId: campaignParam, ...newLocation}
+                    variables: { campaignId: campaignParam, ...newLocation }
                 });
-                
+
+                setAllLocations([...allLocations, { ...newLocation }])
 
                 setNewLocation({
                     name: "",
@@ -55,18 +55,18 @@ const SingleCampaign = () => {
 
                 handleClose();
             }
-        }catch (err){
+        } catch (err) {
             console.log(err);
-        }        
+        }
     }
-    
+
     if (loading) {
         return <div>Loading...</div>;
     }
     return (
         <div className="newLocation">
             <h1>{campaign.name}</h1>
-            <LocationList allLocations={allLocations} setAllLocations={setAllLocations} locations={campaign.locations} />
+            <LocationList allLocations={allLocations} setAllLocations={setAllLocations} />
             <Button onClick={handleShow}>New Location</Button>
             <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -94,7 +94,7 @@ const SingleCampaign = () => {
                             type="text"
                             value={newLocation.details}
                             onChange={handleChange}
-                            />
+                        />
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
@@ -102,7 +102,7 @@ const SingleCampaign = () => {
                     <Button onClick={createLocation}>Save</Button>
                 </Modal.Footer>
             </Modal>
-        </div>   
+        </div>
     )
 }
 
