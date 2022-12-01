@@ -8,11 +8,12 @@ import { EDIT_LOCATION, DELETE_LOCATION } from '../../utils/mutations';
 import Modal from 'react-bootstrap/Modal';
 import { useParams } from 'react-router-dom';
 
-const LocationList = ({ locations }) => {
+const LocationList = ({ locations, allLocations, setAllLocations }) => {
     const [edit] = useMutation(EDIT_LOCATION)
     const [deleteState] = useMutation(DELETE_LOCATION);
     const [showModal, setShowModal] = useState(false);
     const [stateLocation, setStateLocation] = useState({ name: "", details: "", _id: "" })
+    
     const { campaignId: campaignParam } = useParams();
 
     const handleClose = () => setShowModal(false);
@@ -69,18 +70,20 @@ const LocationList = ({ locations }) => {
     console.log(locations)
     return (
         <>
-            <div>
+            <div className='d-flex flex-wrap'>
                 {locations.map((location) => {
                     return (
                         <>
-                        <div>
+                        <div className= "card m-2 d-flex align-items-center border border-dark" style={{width: "18rem"}}>
                             <h2>{location.name}</h2>
-                        <Button onClick={()=> {
+                        <div>   
+                        <Button size="sm" className="mx-2 rounded-pill" style={{width: "7rem"}} onClick={()=> {
                             setStateLocation({name: location.name , details: location.details, _id: location._id})
                             handleShow()}}>Edit Location</Button>
-                            <Button onClick={() => {                            
+                            <Button size="sm" className="mx-2 rounded-pill"  onClick={() => {                            
                             deleteLocation(location._id);
                         }}>Delete Location</Button>
+                        </div> 
                         <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Location</Modal.Title>
