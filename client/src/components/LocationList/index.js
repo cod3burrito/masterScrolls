@@ -76,6 +76,7 @@ const LocationList = ({ locations, allLocations, setAllLocations }) => {
                         <>
                         <div className= "card m-2 d-flex align-items-center border border-dark" style={{width: "18rem"}}>
                             <h2>{location.name}</h2>
+                            <p>{location.details}</p>
                         <div>   
                         <Button size="sm" className="mx-2 rounded-pill" style={{width: "7rem"}} onClick={()=> {
                             setStateLocation({name: location.name , details: location.details, _id: location._id})
