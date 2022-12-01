@@ -123,7 +123,7 @@ const resolvers = {
                     { _id: campaignId },
                     { $pull: { locations: locationId } }
                 )
-                return { deleteLocation, updatedCampaign }
+                return  deleteLocation 
             }
         },
         createCharacter: async (parent, args) => {

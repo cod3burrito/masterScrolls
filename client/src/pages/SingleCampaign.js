@@ -15,6 +15,7 @@ const SingleCampaign = () => {
     const [showModal, setShowModal] = useState(false);
     const { campaignId: campaignParam } = useParams();
     const [create] = useMutation(CREATE_LOCATION);
+    
 
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
@@ -26,8 +27,9 @@ const SingleCampaign = () => {
             variables: { campaignId: campaignParam },
         });
     // const campaignObject = data?.getCampaign || [];
-    const campaign = data?.getCampaign || [];
-
+    const campaign = data?.getCampaign || {};
+    const [allLocations, setAllLocations] = useState(campaign.locations);    
+    // setAllLocations(data.getCampaign.locations)
     const handleChange = (event => {
         const name = event.target.name;
         const value = event.target.value;
@@ -64,7 +66,7 @@ const SingleCampaign = () => {
     return (
         <div className="newLocation">
             <h1>{campaign.name}</h1>
-            <LocationList locations={campaign.locations} />
+            <LocationList allLocations={allLocations} setAllLocations={setAllLocations} locations={campaign.locations} />
             <Button onClick={handleShow}>New Location</Button>
             <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
