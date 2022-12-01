@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import { Modal } from 'react-bootstrap'
 import Character from '../Character'
 import Button from 'react-bootstrap/Button';
+import UserContext from '../../utils/UserContext';
 
 const CharacterList = ({ locationId, characters }) => {
     const [showModal, setShowModal] = useState(false)
     const [currentCharacter, setCurrentCharacter] = useState('')
     const [allCharacters, setAllChars] = useState(characters)
+    const currentCampaign = useParams()
+    const { user } = useContext(UserContext)
+    const globalCampaigns = user.campaigns
     if (!characters) {
         return (<h3> No characters found in this location!</h3>)
     }
@@ -44,19 +48,26 @@ const CharacterList = ({ locationId, characters }) => {
                 </>
                 )
             })}
-            <Button onClick={() => {
-                setCurrentCharacter({
-                    name: null,
-                    alive: true,
-                    class: null,
-                    level: null,
-                    goals: null,
-                    personality: null,
-                    allies: [],
-                    notes: []
-                })
-                setShowModal(true)
-            }}> Add a new Charcater</Button>
+            {globalCampaigns.map(campaign => {
+                if (campaign._id === currentCampaign.campaignId) {
+                    return (
+                        <Button onClick={() => {
+                            setCurrentCharacter({
+                                name: null,
+                                alive: true,
+                                class: null,
+                                level: null,
+                                goals: null,
+                                personality: null,
+                                allies: [],
+                                notes: []
+                            })
+                            setShowModal(true)
+                        }}> Add a new Charcater</Button>
+                    )
+                }
+            })}
+
 
             < Modal
                 size='lg'
