@@ -18,10 +18,13 @@ const CharacterList = ({ locationId, characters }) => {
 
     const styles = {
         alive: {
-            backgroundColor: "blue"
+            backgroundColor: "#736ba5",
+            margin: ".25%"
         },
         inactive: {
-            backgroundColor: "red"
+            backgroundColor: "gray",
+            textDecoration: "line-through",
+            margin: ".25%"
         }
     }
     return (
@@ -29,21 +32,23 @@ const CharacterList = ({ locationId, characters }) => {
             {allCharacters.map((character) => {
                 return (<>
                     {character.alive ? (
-                        <button style={styles.alive} onClick={() => {
+                        <button className='list-group-item' style={styles.alive} onClick={() => {
                             const data = { ...character }
                             setCurrentCharacter(data)
                             console.log(currentCharacter)
                             setShowModal(true)
                         }} key={character._id} to={`/characters/${character._id}`}>
-                            <li style={styles.alive} className='list-group-item'>{character.name}</li>
+                            {/* <li style={styles.alive} className='list-group-item'>{character.name}</li> */}
+                            {character.name}
                         </button>) : (
-                        <button style={styles.inactive} onClick={() => {
+                        <button className='list-group-item' style={styles.inactive} onClick={() => {
                             const data = { ...character }
                             setCurrentCharacter(data)
                             console.log(currentCharacter)
                             setShowModal(true)
                         }} key={character._id} to={`/characters/${character._id}`}>
-                            <li style={styles.inactive} className='list-group-item'>{character.name}</li>
+                            {/* <li style={styles.inactive} className='list-group-item'>{character.name}</li> */}
+                            {character.name}
                         </button>)}
                 </>
                 )
@@ -69,7 +74,7 @@ const CharacterList = ({ locationId, characters }) => {
             })}
 
 
-            < Modal
+            <Modal
                 size='lg'
                 show={showModal}
                 onHide={() => setShowModal(false)}
