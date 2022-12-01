@@ -3,9 +3,10 @@ import Eevee from './Background.js'
 
 function Home() {
     return (
-        <div><div className='welcome'><h1> Welcome, mortal! </h1>
+        <div><Eevee></Eevee>
+            <div className='welcome' style={{position: 'absolute', 'text-align': 'center',}}><h1> Welcome, mortal! </h1>
         <p> Please identify yourself in our ranks or request to join us. See the appropriate links above.</p></div>
-        <Eevee></Eevee></div>
+        </div>
         
     )
 }
