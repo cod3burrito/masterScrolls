@@ -3,17 +3,15 @@ import { useMutation } from '@apollo/client'
 import UserContext from '../../utils/UserContext'
 import { EDIT_CHARACTER, CREATE_CHARACTER, DELETE_CHARACTER } from '../../utils/mutations'
 import { Navigate, useParams } from 'react-router-dom'
+import Button from 'react-bootstrap/Button';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 //have check to see if the person viewing is the owner or not using Auth and global state
 const Character = ({ character, allCharacters, setAllChars, setShowModal, locationId }) => {
-    // console.log()
     const { user } = useContext(UserContext)
-    // console.log(user.campaigns)
     const globalCampaigns = user.campaigns
     const currentCampaign = useParams()
-    // console.log(currentCampaign)
 
     const initialState = { ...character }
     const [formState, setFormState] = useState(initialState)
@@ -101,7 +99,6 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
     }
     const removeAlly = async (event) => {
         const targetAlly = parseInt(event.target.parentElement.dataset.allyNum)
-        console.log(targetAlly)
         const updatedAllies = await formState.allies.filter((ally, index) =>
             index !== targetAlly
         )
@@ -126,74 +123,86 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
     }
     const styles = {
         padding: {
-            padding: "1%"
+            padding: "1%",
+            paddingBottom: "2%"
+        },
+        modalBtn: {
+            backgroundColor: "#A650D1",
+            border: "0px",
+            marginBottom: "2%"
         }
     }
     return (
         <>
             <div className='card'>
                 <div>
-                    <h2 className='card-header'> <input name="name" type="text" value={formState.name} disabled={isActive} onChange={handleChange} /></h2>
+                    <h2 className='card-header'> <input name="name" type="text" value={formState.name} disabled={isActive} placeholder="Character Name Required" onChange={handleChange} /></h2>
                 </div>
                 <div className='card-body' >
-                    <div style={styles.padding}>
-                        <label for="class">Class:</label>
-                        <input name="class" value={formState.class} disabled={isActive} onChange={handleChange} />
-                    </div>
-                    <div style={styles.padding}>
-                        <label for="level">Level:</label>
-                        <input id="level" name="level" type="text" value={formState.level} disabled={isActive} onChange={handleChange} />
-                    </div>
-                    {/* make below the boolean not input */}
-                    <div style={styles.padding}>
-                        <label for="alive">Status</label>
-                        <input id="alive" name="alive" type="checkbox" checked={formState.alive} disabled={isActive} onChange={handleStatus} />
-                    </div>
-                    <div style={styles.padding}>
-                        <label for="goals"> Goals:</label>
-                        <input name="goals" value={formState.goals} disabled={isActive} onChange={handleChange} />
+                    <div className='d-flex flex-wrap justify-content-center align-items-center'>
+                        <div className="" style={styles.padding}>
+                            <label for="class">Class:</label>
+                            <input name="class" placeholder="What class are they" value={formState.class} disabled={isActive} onChange={handleChange} />
+                        </div>
+                        <div style={styles.padding}>
+                            <label for="level">Level:</label>
+                            <input id="level" name="level" placeholder="What level are they" type="text" value={formState.level} disabled={isActive} onChange={handleChange} />
+                        </div>
+                        <div>
+                            <label for="alive">Are they active?: </label>
+                            <input id="alive" name="alive" type="checkbox" checked={formState.alive} disabled={isActive} onChange={handleStatus} />
+                        </div>
+                        <div style={styles.padding}>
+                            <label for="goals"> Goals:</label>
+                            <input name="goals" placeholder="Do they have any goals?" value={formState.goals} disabled={isActive} onChange={handleChange} />
+                        </div>
                     </div>
                     <br></br>
-                    <p> Allies:</p>
-                    <ul>
-                        {formState.allies.map((ally, index) => {
-                            if (isActive) {
-                                return (
-                                    < li ><input value={ally} disabled={isActive} onChange={handleChange} /></li>
-                                )
-                            } else {
-                                return (
+                    <div className="d-flex flex-column align-items-center">
+                        <p> Allies</p>
+                        <ul>
+                            {formState.allies.map((ally, index) => {
+                                if (isActive) {
+                                    return (
+                                        < li style={{ listStyle: "none" }}><input value={ally} disabled={isActive} onChange={handleChange} /></li>
+                                    )
+                                } else {
+                                    return (
 
-                                    < li ><input value={ally} disabled={isActive} onChange={handleChange} /><FontAwesomeIcon style={{ cursor: "pointer" }} data-allyNum={index} onClick={removeAlly} icon={faTrashCan} /></li>
-                                )
-                            }
-                        })}
-                    </ul>
-                    <button disabled={isActive} onClick={addAlly} id='allyBtn'>Add Ally</button>
-                    <div id="newAllyField" style={{ display: AllyField }}>
-                        <label for="newAlly">If more than one Ally, please seperate with a comma</label>
-                        <input id="newAllyInput" name="newAlly" ></input>
-                        <button onClick={saveAlly}> Save new Ally</button>
+                                        < li ><input value={ally} disabled={isActive} onChange={handleChange} /><FontAwesomeIcon style={{ cursor: "pointer" }} data-allyNum={index} onClick={removeAlly} icon={faTrashCan} /></li>
+                                    )
+                                }
+                            })}
+                        </ul>
+
+                        <Button style={styles.modalBtn} disabled={isActive} onClick={addAlly} id='allyBtn'>Add Ally</Button>
+                        <div id="newAllyField" style={{ display: AllyField }}>
+                            <label for="newAlly">If more than one Ally, please seperate with a comma</label>
+                            <input id="newAllyInput" name="newAlly" ></input>
+                            <Button style={styles.modalBtn} onClick={saveAlly}> Save new Ally</Button>
+                        </div>
                     </div>
-                    <p> Notes:</p>
-                    <ul>
-                        {formState.notes.map((note, index) => {
-                            if (isActive) {
-                                return (
-                                    <li> <input value={note} disabled={isActive} onChange={handleChange} /></li>
-                                )
-                            } else {
-                                return (
-                                    <li> <input value={note} disabled={isActive} onChange={handleChange} /><FontAwesomeIcon style={{ cursor: "pointer" }} data-noteNum={index} onClick={removeNote} icon={faTrashCan} /></li>
-                                )
-                            }
-                        })}
-                    </ul>
-                    <button disabled={isActive} id="noteBtn" onClick={addNote}>Add more notes</button>
-                    <div id="newNoteField" style={{ display: NoteField }}>
-                        <label for="newNote">Please seperate each notw with a comma</label>
-                        <input id="newNoteInput" name="newNote" ></input>
-                        <button onClick={saveNote}> Save Notes</button>
+                    <div className="d-flex flex-column align-items-center">
+                        <p> Notes</p>
+                        <ul>
+                            {formState.notes.map((note, index) => {
+                                if (isActive) {
+                                    return (
+                                        <li style={{ listStyle: "none" }}> <input value={note} disabled={isActive} onChange={handleChange} /></li>
+                                    )
+                                } else {
+                                    return (
+                                        <li> <input value={note} disabled={isActive} onChange={handleChange} /><FontAwesomeIcon style={{ cursor: "pointer" }} data-noteNum={index} onClick={removeNote} icon={faTrashCan} /></li>
+                                    )
+                                }
+                            })}
+                        </ul>
+                        <Button style={styles.modalBtn} disabled={isActive} id="noteBtn" onClick={addNote}>Add more notes</Button>
+                        <div id="newNoteField" style={{ display: NoteField }}>
+                            <label for="newNote">Please seperate each notw with a comma</label>
+                            <input id="newNoteInput" name="newNote" ></input>
+                            <Button style={styles.modalBtn} onClick={saveNote}> Save Notes</Button>
+                        </div>
                     </div>
                 </div>
 
@@ -201,16 +210,16 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
 
             {
                 character.name == null ?
-                    (<button onClick={saveCharacter}>Save</button>) :
+                    (<Button style={{ backgroundColor: "#A650D1", border: "0px" }} onClick={saveCharacter}>Save</Button>) :
                     (<>
 
                         {globalCampaigns.map(campaign => {
                             if (campaign._id === currentCampaign.campaignId) {
                                 return (
                                     <>
-                                        <button onClick={saveChanges}>Save</button>
-                                        <button onClick={toggleEdit} id='editBtn'>Edit</button>
-                                        <button onClick={deleteChar}>Delete</button>
+                                        <Button style={styles.modalBtn} onClick={saveChanges}>Save</Button>
+                                        <Button style={styles.modalBtn} onClick={toggleEdit} id='editBtn'>Edit</Button>
+                                        <Button style={{ backgroundColor: "#A650D1", border: "0px" }} onClick={deleteChar}>Delete</Button>
                                     </>
                                 )
                             } else {

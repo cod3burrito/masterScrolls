@@ -96,8 +96,12 @@ const LocationList = ({ allLocations, setAllLocations }) => {
             color: "#140600"
         },
         card: {
-            backgroundColor: "#F1D6B8",
+            backgroundColor: "#F2B644",
             width: "18rem"
+        },
+        modalBtn: {
+            backgroundColor: "#A650D1",
+            border: "0px"
         }
     }
     return (
@@ -160,8 +164,8 @@ const LocationList = ({ allLocations, setAllLocations }) => {
                                     </Modal.Body>
                                     <Modal.Footer>
 
-                                        <Button onClick={handleClose}>Close</Button>
-                                        <Button onClick={editLocation}>Edit</Button>
+                                        <Button style={styles.modalBtn} onClick={handleClose}>Close</Button>
+                                        <Button style={styles.modalBtn} onClick={editLocation}>Edit</Button>
                                     </Modal.Footer>
                                 </Modal>
                                 <div onClick={setLabel} style={{ display: "flex", flexDirection: "column" }}>

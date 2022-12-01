@@ -10,11 +10,11 @@ import { ADD_CAMPAIGN, UPDATE_CAMPAIGN, REMOVE_CAMPAIGN } from '../utils/action'
 function Campaigns() {
     const { user, setUser } = useContext(UserContext);
     const [show, setShow] = useState(false);
-    const [stateCampaign, setStateCampaign] = useState({name: "", plot: "", _id: ""})
+    const [stateCampaign, setStateCampaign] = useState({ name: "", plot: "", _id: "" })
     const [edit, setEdit] = useState(false);
-    const [create, {createError, createdata}] = useMutation(CREATE_CAMPAIGN);
-    const [editState, {editError, editData}] = useMutation(EDIT_CAMPAIGN);
-    const [deleteState, { deleteError, deleteData } ] = useMutation(DELETE_CAMPAIGN);
+    const [create, { createError, createdata }] = useMutation(CREATE_CAMPAIGN);
+    const [editState, { editError, editData }] = useMutation(EDIT_CAMPAIGN);
+    const [deleteState, { deleteError, deleteData }] = useMutation(DELETE_CAMPAIGN);
 
     // Handles the closing of the modal
     const handleClose = () => {
@@ -45,10 +45,10 @@ function Campaigns() {
 
     // Handles the mutations for creating a campaign and updates Global State
     const createCampaign = async () => {
-        try{
-            if(stateCampaign.name){
+        try {
+            if (stateCampaign.name) {
                 const { data } = await create({
-                    variables: {...stateCampaign}
+                    variables: { ...stateCampaign }
                 });
 
                 const payload = {
@@ -61,7 +61,7 @@ function Campaigns() {
                     type: ADD_CAMPAIGN,
                     payload: payload
                 });
-    
+
                 setStateCampaign({
                     name: "",
                     plot: "",
@@ -70,16 +70,16 @@ function Campaigns() {
 
                 handleClose();
             }
-        }catch (err){
+        } catch (err) {
             console.log(err);
-        }        
+        }
     }
 
     // Handles the mutations for editing a campaign and updates Global State
     const editCampaign = async () => {
-        try{            
+        try {
             const { data } = await editState({
-                variables: {campaignId: stateCampaign._id, ...stateCampaign}
+                variables: { campaignId: stateCampaign._id, ...stateCampaign }
             })
 
             const payload = {
@@ -94,16 +94,16 @@ function Campaigns() {
             });
 
             handleClose();
-        }catch (err){
+        } catch (err) {
             console.log(err);
         }
     }
 
     // Handles the mutations for deleting a campaign and updates Global State
     const deleteCampaign = async (id) => {
-        try{
+        try {
             const { data } = await deleteState({
-                variables: {campaignId: id}
+                variables: { campaignId: id }
             })
 
             const payload = {
@@ -115,47 +115,71 @@ function Campaigns() {
                 payload: payload
             });
 
-        }catch (err){
+        } catch (err) {
             console.log(err);
         }
     }
-
-    return(
+    const styles = {
+        button: {
+            backgroundColor: "#C19AB9",
+            padding: ".25%",
+            margin: ".5%",
+            width: "8rem",
+            border: "0px",
+            color: "#140600"
+        },
+        createBtn: {
+            backgroundColor: "#C19AB9",
+            padding: ".25%",
+            margin: ".5%",
+            width: "10rem",
+            border: "0px",
+            color: "#140600"
+        },
+        background: {
+            backgroundColor: "#F2B644"
+        },
+        modalBtn: {
+            backgroundColor: "#A650D1",
+            border: "0px"
+        }
+    }
+    return (
         <>
             <div className="d-flex flex-column align-items-center justify-content-center h-75">
                 <h2>Hello, {user.username}! What would you like to do today?</h2>
                 {user.campaigns.map(campaign => {
                     return (
-                        <div className="d-flex flex-column align-items-center border border-dark rounded-pill w-50 my-2" key={campaign._id}>
+                        <div className="d-flex flex-column align-items-center border border-dark rounded-pill w-50 my-2" style={styles.background} key={campaign._id}>
                             <h3>{campaign.name}</h3>
                             <section className="text-wrap fs-5 mx-5">{campaign.plot}</section>
                             <div className="m-3 w-100 d-flex justify-content-center ">
-                                <Button variant="success" size="sm"  className="mx-2 rounded-pill" onClick={() => {
-                                    setStateCampaign({name: campaign.name, plot: campaign.plot, _id: campaign._id});
+                                <Button className="mx-2 rounded-pill" style={styles.button} onClick={() => {
+                                    setStateCampaign({ name: campaign.name, plot: campaign.plot, _id: campaign._id });
                                     handleEdit();
                                     handleShow();
-                                }}>Edit Campaign</Button>                            
-                                <Button variant="danger" size="sm" className="mx-2 rounded-pill" onClick={() => {                            
+                                }}>Edit Campaign</Button>
+                                <Button className="mx-2 rounded-pill" style={styles.button} onClick={() => {
                                     deleteCampaign(campaign._id);
                                 }}>Delete Campaign</Button>
-                                <Link to={`/campaign/${campaign._id}`}><Button variant="primary" size="sm" className="mx-2 rounded-pill">View Campaign</Button></Link>
+                                <Link to={`/campaign/${campaign._id}`}><Button className="mx-2 rounded-pill" style={styles.button}>View Campaign</Button></Link>
                             </div>
                         </div>
                     )
                 })}
-                <Button variant="info" size="lg" className="mx-2 rounded-pill"onClick={handleShow}>New Campaign</Button>
+                <Button size="lg" className="mx-2 rounded-pill" style={styles.createBtn} onClick={handleShow}>New Campaign</Button>
             </div>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    {edit ? (<Modal.Title>Edit Campaign</Modal.Title>):
-                    (<Modal.Title>New Campaign</Modal.Title>)}                    
+                    {edit ? (<Modal.Title>Edit Campaign</Modal.Title>) :
+                        (<Modal.Title>New Campaign</Modal.Title>)}
                 </Modal.Header>
                 <Modal.Body>
                     <form style={{ display: "flex", flexDirection: "column" }}>
                         <p >Campaign Name:</p>
                         <input
                             className="form-input"
-                            placeholder="Campaign Name"
+                            placeholder="Campaign Name Required"
                             name="name"
                             type="text"
                             id='name-input'
@@ -167,18 +191,18 @@ function Campaigns() {
                         <p >Plot:</p>
                         <input
                             className="form-input"
-                            placeholder="Campaign Plot"
+                            placeholder="Campaign Plot Required"
                             name="plot"
                             type="plot"
                             value={stateCampaign.plot}
                             onChange={handleChange}
-                            />
+                        />
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={handleClose}>Close</Button>
-                    {edit ? (<Button onClick={editCampaign}>Edit</Button>):
-                    (<Button onClick={createCampaign}>Save</Button>)}
+                    <Button style={styles.modalBtn} onClick={handleClose}>Close</Button>
+                    {edit ? (<Button style={styles.modalBtn} onClick={editCampaign}>Edit</Button>) :
+                        (<Button style={styles.modalBtn} onClick={createCampaign}>Save</Button>)}
                 </Modal.Footer>
             </Modal>
         </>

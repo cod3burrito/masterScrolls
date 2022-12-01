@@ -6,12 +6,12 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
 const Navbar = () => {
-    const [randomCharacter, setRandomCharacter] = useState({name: "", gender: "", race: "", desires: [], traits: []})
+    const [randomCharacter, setRandomCharacter] = useState({ name: "", gender: "", race: "", desires: [], traits: [] })
     const [show, setShow] = useState(false);
 
 
     const log = () => {
-        const {name, gender, race, desires, traits} = NPCs.generate().formattedData
+        const { name, gender, race, desires, traits } = NPCs.generate().formattedData
         setRandomCharacter({
             name,
             gender,
@@ -21,8 +21,8 @@ const Navbar = () => {
         });
 
         handleShow();
-        
-        
+
+
     }
 
     const handleClose = () => {
@@ -41,7 +41,7 @@ const Navbar = () => {
     return (
         <>
             <header>
-                <nav className='navbar navbar-expand-lg'>                    
+                <nav className='navbar navbar-expand-lg'>
                     <div id='navbarNav' style={{ marginLeft: "auto" }}>
                         <ul className="navbar-nav">
                             <li className="nav-item">
@@ -50,17 +50,17 @@ const Navbar = () => {
                             <li className="nav-item">
                                 <Link onClick={log} className="navbar-brand">Generate Random Character</Link>
                             </li>
-                            
+
                             {Auth.loggedIn() ?
                                 (
-                                <>    
-                                    <li className="nav-item">
-                                        <Link className="navbar-brand" to="/campaigns">Campaign Library</Link>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Link onClick={Auth.logout} className="navbar-brand" to="/">Logout</Link>
-                                    </li>                                    
-                                </>) :
+                                    <>
+                                        <li className="nav-item">
+                                            <Link className="navbar-brand" to="/campaigns">Campaign Library</Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link onClick={Auth.logout} className="navbar-brand" to="/">Logout</Link>
+                                        </li>
+                                    </>) :
                                 (<li className="nav-item ">
                                     <Link className="navbar-brand" to="/login">Login</Link>
                                 </li>)}
@@ -71,22 +71,22 @@ const Navbar = () => {
             </header>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>You Summoned</Modal.Title>                   
+                    <Modal.Title>You Summoned</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="d-flex justify-content-between">
                         <div>
                             <h5>Name</h5>
-                            <p>{randomCharacter.name}</p>        
+                            <p>{randomCharacter.name}</p>
                         </div>
                         <div>
                             <h5>Race</h5>
-                            <p>{randomCharacter.race}</p>        
+                            <p>{randomCharacter.race}</p>
                         </div>
                         <div>
                             <h5>Gender</h5>
-                            <p>{randomCharacter.gender}</p>       
-                        </div>                        
+                            <p>{randomCharacter.gender}</p>
+                        </div>
                     </div>
                     <h5 className="text-center mt-2">Desires</h5>
                     <ul className="list-group">

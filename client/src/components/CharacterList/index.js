@@ -44,7 +44,6 @@ const CharacterList = ({ locationId, characters }) => {
                         <button className='list-group-item mx-2 rounded-pill' style={styles.alive} onClick={() => {
                             const data = { ...character }
                             setCurrentCharacter(data)
-                            console.log(currentCharacter)
                             setShowModal(true)
                         }} key={character._id} >
                             {character.name}
@@ -52,7 +51,6 @@ const CharacterList = ({ locationId, characters }) => {
                         <button className='list-group-item mx-2 rounded-pill' style={styles.inactive} onClick={() => {
                             const data = { ...character }
                             setCurrentCharacter(data)
-                            console.log(currentCharacter)
                             setShowModal(true)
                         }} key={character._id} >
                             {character.name}
