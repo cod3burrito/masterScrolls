@@ -1,19 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import CharacterList from '../CharacterList'
 import Collapsible from 'react-collapsible'
 import Button from 'react-bootstrap/Button';
 import { useMutation } from '@apollo/client';
-import { EDIT_LOCATION, DELETE_LOCATION } from '../../utils/mutations';
+import { EDIT_LOCATION, DELETE_LOCATION, DELETE_CHARACTER } from '../../utils/mutations';
 import Modal from 'react-bootstrap/Modal';
 import { useParams } from 'react-router-dom';
+import UserContext from '../../utils/UserContext';
 
 const LocationList = ({ allLocations, setAllLocations }) => {
     const [edit] = useMutation(EDIT_LOCATION)
     const [deleteState] = useMutation(DELETE_LOCATION);
+    const [deleteChar] = useMutation(DELETE_CHARACTER)
     const [showModal, setShowModal] = useState(false);
     const [stateLocation, setStateLocation] = useState({ name: "", details: "", _id: "" })
-
+    const { user } = useContext(UserContext)
+    const globalCampaigns = user.campaigns
+    // const currentCampaign = useParams()
     const { campaignId: campaignParam } = useParams();
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
@@ -51,8 +55,17 @@ const LocationList = ({ allLocations, setAllLocations }) => {
         }
     }
 
-    const deleteLocation = async (id) => {
+    const deleteLocation = async (chars, id) => {
         try {
+            console.log("deleting")
+            console.log(chars)
+            chars.forEach(async (char) => {
+                // console.log(char._id)
+                await deleteChar({
+                    variables: { locationId: id, characterId: char._id }
+                }
+                )
+            })
             const { data } = await deleteState({
                 variables: { campaignId: campaignParam, locationId: id }
             })
@@ -77,13 +90,24 @@ const LocationList = ({ allLocations, setAllLocations }) => {
                             <div className="card m-2 d-flex align-items-center border border-dark" style={{ width: "18rem" }}>
                                 <h2>{location.name}</h2>
                                 <div>
-                                    <Button size="sm" className="mx-2 rounded-pill" style={{ width: "7rem" }} onClick={() => {
-                                        setStateLocation({ name: location.name, details: location.details, _id: location._id })
-                                        handleShow()
-                                    }}>Edit Location</Button>
-                                    <Button size="sm" className="mx-2 rounded-pill" onClick={() => {
-                                        deleteLocation(location._id);
-                                    }}>Delete Location</Button>
+                                    {globalCampaigns.map(campaign => {
+                                        if (campaign._id === campaignParam) {
+                                            return (
+                                                <>
+                                                    <Button size="sm" className="mx-2 rounded-pill" style={{ width: "7rem" }} onClick={() => {
+                                                        setStateLocation({ name: location.name, details: location.details, _id: location._id })
+                                                        handleShow()
+                                                    }}>Edit Location</Button>
+                                                    <Button size="sm" className="mx-2 rounded-pill" onClick={() => {
+                                                        deleteLocation(location.characters, location._id);
+                                                    }}>Delete Location</Button>
+                                                </>
+                                            )
+                                        } else {
+                                            return (<></>)
+                                        }
+                                    })}
+
                                 </div>
                                 <Modal show={showModal} onHide={handleClose}>
                                     <Modal.Header closeButton>
@@ -115,6 +139,7 @@ const LocationList = ({ allLocations, setAllLocations }) => {
                                         </form>
                                     </Modal.Body>
                                     <Modal.Footer>
+
                                         <Button onClick={handleClose}>Close</Button>
                                         <Button onClick={editLocation}>Edit</Button>
                                     </Modal.Footer>
