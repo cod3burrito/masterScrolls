@@ -81,7 +81,7 @@ mutation DeleteLocation($campaignId: ID!, $locationId: ID!) {
  
   }
 }
-`
+`;
 
 export const EDIT_CAMPAIGN = gql`
   mutation Mutation($campaignId: ID!, $name: String, $plot: String) {

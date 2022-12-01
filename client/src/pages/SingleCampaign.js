@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 import { useMutation } from '@apollo/client';
 import { QUERY_GETCAMPAIGN } from '../utils/queries'
@@ -15,21 +15,26 @@ const SingleCampaign = () => {
     const [showModal, setShowModal] = useState(false);
     const { campaignId: campaignParam } = useParams();
     const [create] = useMutation(CREATE_LOCATION);
-    
+    const globalCampaigns = user.campaigns
 
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
 
-    const [newLocation, setNewLocation] = useState({name: "", details: ""})
+    const [newLocation, setNewLocation] = useState({ name: "", details: "" })
     const { loading, data } = useQuery(
         QUERY_GETCAMPAIGN,
         {
             variables: { campaignId: campaignParam },
         });
-    // const campaignObject = data?.getCampaign || [];
-    const campaign = data?.getCampaign || {};
-    const [allLocations, setAllLocations] = useState(campaign.locations);    
-    // setAllLocations(data.getCampaign.locations)
+    const campaign = data?.getCampaign || [];
+
+    const [allLocations, setAllLocations] = useState([]);
+
+    useEffect(() => {
+        console.log("do I come in here?")
+        setAllLocations(campaign.locations)
+    }, [loading]);
+
     const handleChange = (event => {
         const name = event.target.name;
         const value = event.target.value;
@@ -40,14 +45,15 @@ const SingleCampaign = () => {
     })
 
     const createLocation = async () => {
-        try{
-            if(newLocation.name){
+        try {
+            if (newLocation.name) {
                 console.log("Got a name");
                 const { data } = await create({
-                    variables: {campaignId: campaignParam, ...newLocation}
+                    variables: { campaignId: campaignParam, ...newLocation }
                 });
-                
 
+                setAllLocations([...allLocations, { ...data.createLocation }])
+                console.log(allLocations)
                 setNewLocation({
                     name: "",
                     details: ""
@@ -55,19 +61,27 @@ const SingleCampaign = () => {
 
                 handleClose();
             }
-        }catch (err){
+        } catch (err) {
             console.log(err);
-        }        
+        }
     }
-    
+
     if (loading) {
         return <div>Loading...</div>;
     }
     return (
-        <div className="newLocation">
-            <h1>{campaign.name}</h1>
-            <LocationList allLocations={allLocations} setAllLocations={setAllLocations} locations={campaign.locations} />
-            <Button onClick={handleShow}>New Location</Button>
+        <div className="newLocation d-flex flex-column justify-content-center">
+            <h1 className="text-center">{campaign.name}</h1>
+            <LocationList allLocations={allLocations} setAllLocations={setAllLocations} />
+            {globalCampaigns.map(campaign => {
+                if (campaign._id === campaignParam) {
+                    return (
+                        <Button onClick={handleShow} className="align-self-center" style={{ width: "18rem" }}>New Location</Button>
+                    )
+                } else {
+                    return (<></>)
+                }
+            })}
             <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>New Location</Modal.Title>
@@ -94,7 +108,7 @@ const SingleCampaign = () => {
                             type="text"
                             value={newLocation.details}
                             onChange={handleChange}
-                            />
+                        />
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
@@ -102,7 +116,7 @@ const SingleCampaign = () => {
                     <Button onClick={createLocation}>Save</Button>
                 </Modal.Footer>
             </Modal>
-        </div>   
+        </div>
     )
 }
 
