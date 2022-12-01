@@ -31,7 +31,6 @@ const SingleCampaign = () => {
     const [allLocations, setAllLocations] = useState([]);
 
     useEffect(() => {
-        console.log("do I come in here?")
         setAllLocations(campaign.locations)
     }, [loading]);
 
@@ -47,13 +46,11 @@ const SingleCampaign = () => {
     const createLocation = async () => {
         try {
             if (newLocation.name) {
-                console.log("Got a name");
                 const { data } = await create({
                     variables: { campaignId: campaignParam, ...newLocation }
                 });
 
                 setAllLocations([...allLocations, { ...data.createLocation }])
-                console.log(allLocations)
                 setNewLocation({
                     name: "",
                     details: ""
@@ -69,6 +66,21 @@ const SingleCampaign = () => {
     if (loading) {
         return <div>Loading...</div>;
     }
+    const styles = {
+        button: {
+            backgroundColor: "#C19AB9",
+            padding: ".25%",
+            margin: ".5%",
+            marginTop: "5%",
+            width: "18rem",
+            border: "0px",
+            color: "#140600"
+        },
+        modalBtn: {
+            backgroundColor: "#A650D1",
+            border: "0px"
+        }
+    }
     return (
         <div className="newLocation d-flex flex-column justify-content-center">
             <h1 className="text-center">{campaign.name}</h1>
@@ -76,7 +88,7 @@ const SingleCampaign = () => {
             {globalCampaigns.map(campaign => {
                 if (campaign._id === campaignParam) {
                     return (
-                        <Button onClick={handleShow} className="align-self-center" style={{ width: "18rem" }}>New Location</Button>
+                        <Button className="mx-2 rounded-pill align-self-center" style={styles.button} onClick={handleShow}>New Location</Button>
                     )
                 } else {
                     return (<></>)
@@ -91,7 +103,7 @@ const SingleCampaign = () => {
                         <p >Location Name:</p>
                         <input
                             className="form-input"
-                            placeholder="Location Name"
+                            placeholder="Location Name Required"
                             name="name"
                             type="text"
                             id='name-input'
@@ -103,7 +115,7 @@ const SingleCampaign = () => {
                         <p >Details:</p>
                         <input
                             className="form-input"
-                            placeholder="Location Details"
+                            placeholder="Location Details Required"
                             name="details"
                             type="text"
                             value={newLocation.details}
@@ -112,8 +124,8 @@ const SingleCampaign = () => {
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={handleClose}>Close</Button>
-                    <Button onClick={createLocation}>Save</Button>
+                    <Button style={styles.modalBtn} onClick={handleClose}>Close</Button>
+                    <Button style={styles.modalBtn} onClick={createLocation}>Save</Button>
                 </Modal.Footer>
             </Modal>
         </div>
