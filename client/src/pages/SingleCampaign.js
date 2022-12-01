@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 import { useMutation } from '@apollo/client';
 import { QUERY_GETCAMPAIGN } from '../utils/queries'
@@ -26,10 +26,14 @@ const SingleCampaign = () => {
         {
             variables: { campaignId: campaignParam },
         });
-    // const campaignObject = data?.getCampaign || [];
     const campaign = data?.getCampaign || [];
-    console.log(campaign.locations)
-    const [allLocations, setAllLocations] = useState(campaign.locations)
+
+    const [allLocations, setAllLocations] = useState([]);
+
+    useEffect(() => {
+        console.log("do I come in here?")
+        setAllLocations(campaign.locations)
+    }, [loading]);
 
     const handleChange = (event => {
         const name = event.target.name;
