@@ -69,8 +69,8 @@ const Navbar = () => {
                     </div>
                 </nav>
             </header>
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
+            <Modal style={{ "--bs-modal-bg": "#F2B644" }} show={show} onHide={handleClose}>
+                <Modal.Header style={{ "--bs-modal-header-border-color": "#140600" }} closeButton>
                     <Modal.Title>You Summoned</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -90,14 +90,14 @@ const Navbar = () => {
                     </div>
                     <h5 className="text-center mt-2">Desires</h5>
                     <ul className="list-group">
-                        {randomCharacter.desires.map(desire => <li className="list-group-item" key={desire}>{desire}</li>)}
+                        {randomCharacter.desires.map(desire => <li className="list-group-item" style={{backgroundColor: "#F2B644", borderColor: "#140600" }} key={desire}>{desire}</li>)}
                     </ul>
                     <h5 className="mt-2 text-center">Traits</h5>
                     <ul className="list-group">
-                        {randomCharacter.traits.map(trait => <li className="list-group-item" key={trait}>{trait}</li>)}
+                        {randomCharacter.traits.map(trait => <li className="list-group-item" style={{backgroundColor: "#F2B644", borderColor: "#140600" }} key={trait}>{trait}</li>)}
                     </ul>
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer style={{ "--bs-modal-footer-border-color": "#140600" }}>
                     <Button onClick={handleClose}>Close</Button>
                 </Modal.Footer>
             </Modal>
