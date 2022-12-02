@@ -35,19 +35,21 @@ const LocationList = ({ allLocations, setAllLocations }) => {
         try {
             if (stateLocation.name) {
                 const { name, details } = stateLocation;
-
+                console.log(name, details)
                 const { data } = await edit({
-                    variables: { name, details, locationId: stateLocation._id, campaignId: campaignParam }
+                    variables: { name: name, details: details, locationId: stateLocation._id, campaignId: campaignParam }
                 });
+                console.log(data.editLocation)
                 const updatedLocations = await allLocations.map(location => {
-                    if (location._id === stateLocation._id) {
-                        return stateLocation
+                    if (location._id === data.editLocation._id) {
+                        console.log("found it")
+                        return data.editLocation
                     } else {
                         return location
                     }
                 })
                 setAllLocations(updatedLocations)
-
+                console.log(updatedLocations)
                 handleClose();
             }
         } catch (err) {
