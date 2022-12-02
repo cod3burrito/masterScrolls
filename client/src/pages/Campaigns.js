@@ -146,7 +146,7 @@ function Campaigns() {
     }
     return (
         <>
-            <div className="d-flex flex-column align-items-center justify-content-center h-75">
+            <div className="d-flex flex-column align-items-center justify-content-center overflow-auto m-5">
                 <h2>Hello, {user.username}! What would you like to do today?</h2>
                 {user.campaigns.map(campaign => {
                     return (
@@ -169,8 +169,8 @@ function Campaigns() {
                 })}
                 <Button size="lg" className="mx-2 rounded-pill" style={styles.createBtn} onClick={handleShow}>New Campaign</Button>
             </div>
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
+            <Modal style={{ "--bs-modal-bg": "#F2B644" }} show={show} onHide={handleClose}>
+                <Modal.Header style={{ "--bs-modal-header-border-color": "#140600" }} closeButton>
                     {edit ? (<Modal.Title>Edit Campaign</Modal.Title>) :
                         (<Modal.Title>New Campaign</Modal.Title>)}
                 </Modal.Header>
@@ -199,7 +199,7 @@ function Campaigns() {
                         />
                     </form>
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer style={{ "--bs-modal-footer-border-color": "#140600" }} >
                     <Button style={styles.modalBtn} onClick={handleClose}>Close</Button>
                     {edit ? (<Button style={styles.modalBtn} onClick={editCampaign}>Edit</Button>) :
                         (<Button style={styles.modalBtn} onClick={createCampaign}>Save</Button>)}

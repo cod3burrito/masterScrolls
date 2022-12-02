@@ -94,8 +94,8 @@ const SingleCampaign = () => {
                     return (<></>)
                 }
             })}
-            <Modal show={showModal} onHide={handleClose}>
-                <Modal.Header closeButton>
+            <Modal style={{ "--bs-modal-bg": "#F2B644" }} show={showModal} onHide={handleClose}>
+                <Modal.Header style={{ "--bs-modal-header-border-color": "#140600" }} closeButton>
                     <Modal.Title>New Location</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -123,7 +123,7 @@ const SingleCampaign = () => {
                         />
                     </form>
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer style={{ "--bs-modal-footer-border-color": "#140600" }} >
                     <Button style={styles.modalBtn} onClick={handleClose}>Close</Button>
                     <Button style={styles.modalBtn} onClick={createLocation}>Save</Button>
                 </Modal.Footer>
