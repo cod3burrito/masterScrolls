@@ -129,14 +129,19 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
         modalBtn: {
             backgroundColor: "#A650D1",
             border: "0px",
-            marginBottom: "2%"
+            width: "7rem"
+        },
+        innerBtn: {
+            backgroundColor: "#A650D1",
+            // width: "7rem",
+            border: "0px"
         }
     }
     return (
         <>
-            <div className='card'>
+            <div style={{ backgroundColor: "#F2B644" }} className='card'>
                 <div>
-                    <h2 className='card-header'> <input name="name" type="text" value={formState.name} disabled={isActive} placeholder="Character Name Required" onChange={handleChange} /></h2>
+                    <h2 style={{ "--bs-card-cap-color": "#F2B644", "--bs-card-border-color": "#140600" }} className='card-header'> <input name="name" type="text" value={formState.name} disabled={isActive} placeholder="Character Name Required" onChange={handleChange} /></h2>
                 </div>
                 <div className='card-body' >
                     <div className='d-flex flex-wrap justify-content-center align-items-center'>
@@ -177,9 +182,9 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
 
                         <Button style={styles.modalBtn} disabled={isActive} onClick={addAlly} id='allyBtn'>Add Ally</Button>
                         <div id="newAllyField" style={{ display: AllyField }}>
-                            <label for="newAlly">If more than one Ally, please seperate with a comma</label>
+                            <label for="newAlly">If more than one Ally, please seperate with a comma: </label>
                             <input id="newAllyInput" name="newAlly" ></input>
-                            <Button style={styles.modalBtn} onClick={saveAlly}> Save new Ally</Button>
+                            <Button style={styles.innerBtn} onClick={saveAlly}> Save New Ally</Button>
                         </div>
                     </div>
                     <div className="d-flex flex-column align-items-center">
@@ -197,38 +202,38 @@ const Character = ({ character, allCharacters, setAllChars, setShowModal, locati
                                 }
                             })}
                         </ul>
-                        <Button style={styles.modalBtn} disabled={isActive} id="noteBtn" onClick={addNote}>Add more notes</Button>
+                        <Button style={styles.modalBtn} disabled={isActive} id="noteBtn" onClick={addNote}>Add More Notes</Button>
                         <div id="newNoteField" style={{ display: NoteField }}>
-                            <label for="newNote">Please seperate each notw with a comma</label>
+                            <label for="newNote">Please seperate each note with a comma: </label>
                             <input id="newNoteInput" name="newNote" ></input>
-                            <Button style={styles.modalBtn} onClick={saveNote}> Save Notes</Button>
+                            <Button style={styles.innerBtn} onClick={saveNote}> Save Notes</Button>
                         </div>
                     </div>
                 </div>
+                {
+                    character.name == null ?
+                        (<Button style={{ backgroundColor: "#A650D1", border: "0px" }} onClick={saveCharacter}>Save Character</Button>) :
+                        (<>
 
+                            {globalCampaigns.map(campaign => {
+                                if (campaign._id === currentCampaign.campaignId) {
+                                    return (
+                                        <div style={{ display: "flex", justifyContent: "space-evenly", flexWrap: "wrap" }}>
+                                            <Button style={styles.modalBtn} onClick={saveChanges}>Save Changes</Button>
+                                            <Button style={styles.modalBtn} onClick={toggleEdit} id='editBtn'>Edit Character</Button>
+                                            <Button style={styles.modalBtn} onClick={deleteChar}>Delete Character</Button>
+                                        </div>
+                                    )
+                                } else {
+                                    return (<></>)
+                                }
+                            })}
+
+                        </>)
+                }
             </div>
 
-            {
-                character.name == null ?
-                    (<Button style={{ backgroundColor: "#A650D1", border: "0px" }} onClick={saveCharacter}>Save</Button>) :
-                    (<>
 
-                        {globalCampaigns.map(campaign => {
-                            if (campaign._id === currentCampaign.campaignId) {
-                                return (
-                                    <>
-                                        <Button style={styles.modalBtn} onClick={saveChanges}>Save</Button>
-                                        <Button style={styles.modalBtn} onClick={toggleEdit} id='editBtn'>Edit</Button>
-                                        <Button style={{ backgroundColor: "#A650D1", border: "0px" }} onClick={deleteChar}>Delete</Button>
-                                    </>
-                                )
-                            } else {
-                                return (<></>)
-                            }
-                        })}
-
-                    </>)
-            }
 
         </>
     )

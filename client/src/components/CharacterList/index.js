@@ -79,7 +79,7 @@ const CharacterList = ({ locationId, characters }) => {
             })}
 
 
-            <Modal
+            <Modal style={{ "--bs-modal-bg": "#F2B644" }}
                 size='lg'
                 show={showModal}
                 onHide={() => setShowModal(false)}

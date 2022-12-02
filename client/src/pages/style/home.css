@@ -1,4 +1,4 @@
-.welcome {
+/* .welcome {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -8,10 +8,10 @@
     color: #7A2BA1;
     text-align: center;
     z-index: 1;
-}
+} */
 
 .joseph {
-    width: 100%;
-    height: 80%;
+    /* width: 100%;
+    height: 80%; */
     display: flex;
 }
