@@ -50,27 +50,27 @@ function Navbar() {
                 <logo className="navbar-brand">
                     <img src="./masterScrollsLogo.png" alt="logo for Master Scrolls in purple text" style={logoStyle}></img>
                 </logo>
-                    <div id='navbarNav' style={{ marginLeft: "auto" }}>
-                        <ul className="navbar-nav">
-                            <li className="nav-item">
-                                <Link className="navbar-brand" to="/">Home Page</Link>
+                    <div id='navbarNav' style={{ marginLeft: "auto", overflow: "hidden" }} >
+                        <ul className="navbar-nav d-flex flex-wrap" >
+                            <li className="nav-item" >
+                                <Link style={{fontSize: "2rem"}} className="navbar-brand" to="/">Home Page</Link>
                             </li>
                             <li className="nav-item">
-                                <Link onClick={log} className="navbar-brand">Generate Random Character</Link>
+                                <Link onClick={log} style={{fontSize: "2rem"}} className="navbar-brand">Generate Random Character</Link>
                             </li>
 
                             {Auth.loggedIn() ?
                                 (
                                     <>
                                         <li className="nav-item">
-                                            <Link className="navbar-brand" to="/campaigns">Campaign Library</Link>
+                                            <Link className="navbar-brand" style={{fontSize: "2rem"}} to="/campaigns">Campaign Library</Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link onClick={Auth.logout} className="navbar-brand" to="/">Logout</Link>
+                                            <Link onClick={Auth.logout} className="navbar-brand" style={{fontSize: "2rem"}} to="/">Logout</Link>
                                         </li>
                                     </>) :
                                 (<li className="nav-item ">
-                                    <Link className="navbar-brand" to="/login">Login</Link>
+                                    <Link className="navbar-brand" style={{fontSize: "2rem"}} to="/login">Login</Link>
                                 </li>)}
 
                         </ul>
