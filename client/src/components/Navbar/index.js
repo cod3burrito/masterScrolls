@@ -5,13 +5,18 @@ import { NPCs } from "fantasy-content-generator";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-const Navbar = () => {
-    const [randomCharacter, setRandomCharacter] = useState({ name: "", gender: "", race: "", desires: [], traits: [] })
+function Navbar() {
+    const [randomCharacter, setRandomCharacter] = useState({ name: "", gender: "", race: "", desires: [], traits: [] });
     const [show, setShow] = useState(false);
 
+    const logoStyle = {
+        width: 600,
+        height: 50,
+        justifyContent: 'flex-end'
+    }
 
     const log = () => {
-        const { name, gender, race, desires, traits } = NPCs.generate().formattedData
+        const { name, gender, race, desires, traits } = NPCs.generate().formattedData;
         setRandomCharacter({
             name,
             gender,
@@ -23,7 +28,7 @@ const Navbar = () => {
         handleShow();
 
 
-    }
+    };
 
     const handleClose = () => {
         setShow(false);
@@ -34,7 +39,7 @@ const Navbar = () => {
             desires: [],
             traits: []
         });
-    }
+    };
 
     const handleShow = () => setShow(true);
 
@@ -42,6 +47,9 @@ const Navbar = () => {
         <>
             <header>
                 <nav className='navbar navbar-expand-lg'>
+                <logo className="navbar-brand">
+                    <img src="./masterScrollsLogo.png" alt="logo for Master Scrolls in purple text" style={logoStyle}></img>
+                </logo>
                     <div id='navbarNav' style={{ marginLeft: "auto" }}>
                         <ul className="navbar-nav">
                             <li className="nav-item">
@@ -102,7 +110,7 @@ const Navbar = () => {
                 </Modal.Footer>
             </Modal>
         </>
-    )
+    );
 }
 
 export default Navbar
