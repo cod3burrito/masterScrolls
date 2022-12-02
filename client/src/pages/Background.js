@@ -1,5 +1,5 @@
 import videoBG from '../assets/pikapaper.mp4'
-
+import TypeWriterEffect from 'react-typewriter-effect'
 const eevee = () => {
     const styles = {
         videoContainer: {
@@ -13,6 +13,7 @@ const eevee = () => {
             flexDirection: "column",
             justifyContent: "center",
             alignContent: "center",
+            alignItems: "center"
         },
         video: {
             // minWidth: "100%",
@@ -25,17 +26,40 @@ const eevee = () => {
             transform: "translate(-50%,-50%)"
         },
         welcome: {
+            width: "fit-content",
             color: "#7A2BA1",
-            textAlign: "center",
-            "z-index": "1"
+            "z-index": "1",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center"
         }
 
     }
+
     return (
         <div style={styles.videoContainer} >
             <div className='welcome' style={styles.welcome}>
-                <h1 style={{ fontSize: "72px" }}> Welcome, mortal! </h1>
-                <p style={{ fontSize: "20px" }}> Please identify yourself in our ranks or request to join us. See the appropriate links above.</p>
+                < TypeWriterEffect
+                    textStyle={{
+                        fontWeight: 500,
+                        fontSize: "72px"
+                    }}
+                    startDelay={4000}
+                    cursorColor="black"
+                    text='Welcome, mortal!'
+                    typeSpeed={50}
+                    hideCursorAfterText={true} />
+                <br></br>
+                <TypeWriterEffect
+                    textStyle={{
+                        fontWeight: 500,
+                        fontSize: "20px"
+                    }}
+                    startDelay={5000}
+                    cursorColor="black"
+                    text='Please identify yourself in our ranks or request to join us. See the appropriate links above.'
+                    typeSpeed={30}
+                    hideCursorAfterText={true} />
             </div>
             <video style={styles.video} autoPlay alt='a scroll unrolling' id='pikapaper'>
                 <source src={videoBG} type='video/mp4' />
@@ -46,3 +70,4 @@ const eevee = () => {
 }
 
 export default eevee
+
