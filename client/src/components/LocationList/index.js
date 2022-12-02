@@ -102,7 +102,8 @@ const LocationList = ({ allLocations, setAllLocations }) => {
         modalBtn: {
             backgroundColor: "#A650D1",
             border: "0px"
-        }
+        },
+
     }
     return (
         <>
@@ -133,8 +134,8 @@ const LocationList = ({ allLocations, setAllLocations }) => {
                                     })}
 
                                 </div>
-                                <Modal show={showModal} onHide={handleClose}>
-                                    <Modal.Header closeButton>
+                                <Modal style={{ "--bs-modal-bg": "#F2B644" }} show={showModal} onHide={handleClose}>
+                                    <Modal.Header style={{ "--bs-modal-header-border-color": "#140600" }} closeButton>
                                         <Modal.Title>Edit Location</Modal.Title>
                                     </Modal.Header>
                                     <Modal.Body>
@@ -162,13 +163,13 @@ const LocationList = ({ allLocations, setAllLocations }) => {
                                             />
                                         </form>
                                     </Modal.Body>
-                                    <Modal.Footer>
+                                    <Modal.Footer style={{ "--bs-modal-footer-border-color": "#140600" }} >
 
                                         <Button style={styles.modalBtn} onClick={handleClose}>Close</Button>
                                         <Button style={styles.modalBtn} onClick={editLocation}>Edit</Button>
                                     </Modal.Footer>
                                 </Modal>
-                                <div onClick={setLabel} style={{ display: "flex", flexDirection: "column" }}>
+                                <div style={{ display: "flex", flexDirection: "column" }}>
                                     <Collapsible style={{ textAlign: "center" }} key={location._id} trigger={"View Characters"}>
                                         <ul className='list-group list-group-flush'>
                                             <CharacterList locationId={location._id} characters={location.characters} />

@@ -6,8 +6,13 @@
 
 .modal-content {
   font-family: 'Quintessential', cursive;
-
+  /* background: #F2B644; */
 }
+
+.modal {
+  --bs-modal-bg: #F2B644;
+}
+
 
 html body #root {
   height: 100vh;
@@ -18,6 +23,7 @@ html body #root {
   background-size: cover;
   background-repeat: no-repeat;
 }
+
 
 body {
   margin: 0;
