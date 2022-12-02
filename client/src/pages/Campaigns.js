@@ -146,7 +146,7 @@ function Campaigns() {
     }
     return (
         <>
-            <div className="d-flex flex-column align-items-center justify-content-center h-75">
+            <div className="d-flex flex-column align-items-center justify-content-center overflow-auto m-5">
                 <h2>Hello, {user.username}! What would you like to do today?</h2>
                 {user.campaigns.map(campaign => {
                     return (
