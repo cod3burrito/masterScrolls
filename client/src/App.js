@@ -1,4 +1,3 @@
-import './App.css';
 //importing from npm packages
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client'
 import { Routes, Route } from 'react-router-dom'
