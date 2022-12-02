@@ -70,6 +70,17 @@ mutation EditLocation($locationId: ID!, $name: String, $details: String, $campai
     details
     name
     _id
+    characters {
+      _id
+      alive
+      allies
+      class
+      goals
+      level
+      name
+      notes
+      personality
+    }
   }
 }
 `
