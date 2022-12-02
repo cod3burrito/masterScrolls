@@ -4,6 +4,7 @@ import Auth from '../../utils/auth'
 import { NPCs } from "fantasy-content-generator";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import Logo from '../../assets/masterScrollsLogo.png'
 
 const Navbar = () => {
     const [randomCharacter, setRandomCharacter] = useState({ name: "", gender: "", race: "", desires: [], traits: [] })
@@ -43,6 +44,7 @@ const Navbar = () => {
             <header>
                 <nav className='navbar navbar-expand-lg'>
                     <div id='navbarNav' style={{ marginLeft: "auto" }}>
+                        <Logo></Logo> 
                         <ul className="navbar-nav">
                             <li className="nav-item">
                                 <Link className="navbar-brand" to="/">Home Page</Link>
