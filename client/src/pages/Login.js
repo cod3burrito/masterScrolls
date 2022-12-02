@@ -50,11 +50,37 @@ const Login = () => {
             password: '',
         });
     }
+
+    const styles = {
+        button: {
+            backgroundColor: "#C19AB9",
+            padding: ".25%",
+            margin: ".5%",
+            width: "8rem",
+            border: "0px",
+            color: "#140600"
+        },
+        createBtn: {
+            backgroundColor: "#C19AB9",
+            padding: ".25%",
+            margin: ".5%",
+            width: "10rem",
+            border: "0px",
+            color: "#140600"
+        },
+        background: {
+            backgroundColor: "#F2B644"
+        },
+        modalBtn: {
+            backgroundColor: "#A650D1",
+            border: "0px"
+        }
+    }
     
     return (
         <main className='justify-center mb-4'>
             <div className='d-flex justify-content-center'>
-                <div className="card">
+                <div style={{ ...styles.background, justifyContent: "center", width: "350px"}} className="card">
                     <h4 className="card-header p-2">Login</h4>
                     <div className="card-body">
                         {data ? (
@@ -83,28 +109,26 @@ const Login = () => {
                                     onChange={handleChange}
                                 />
                                 <br></br>
-
-                                <button
-                                    className="btn btn-block btn-info"
-                                    style={{ cursor: 'pointer' }}
-                                    type="submit"
-                                >
-                                    Submit
-                                </button>
+                                <div className="d-flex flex-wrap justify-content-center">
+                                    <button
+                                        className="btn btn-block btn-info"
+                                        style={{ ...styles.button, cursor: 'pointer' }}
+                                        type="submit"
+                                    >
+                                        Submit
+                                    </button>
+                                    
+                                    <Link className="btn btn-block btn-info"
+                                    to='/signup' style={{ ...styles.button, cursor: 'pointer' }}>Sign up Now!</Link>
+                                </div>
+                                    {error && (
+                                <div className="my-3 p-3 bg-danger text-white">
+                                    {error.message}
+                                </div>
+                        )}
                                 <br></br>
-
                             </form>
-
-                        )}
-                        <div>
-                            <Link className="btn btn-block btn-info"
-                                to='/signup'>New User, Sign up Now!</Link>
-                        </div>
-                        {error && (
-                            <div className="my-3 p-3 bg-danger text-white">
-                                {error.message}
-                            </div>
-                        )}
+                        )}                        
                     </div>
                 </div>
             </div>

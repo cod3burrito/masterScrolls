@@ -50,35 +50,35 @@ function Navbar() {
                 <logo className="navbar-brand">
                     <img src="./masterScrollsLogo.png" alt="logo for Master Scrolls in purple text" style={logoStyle}></img>
                 </logo>
-                    <div id='navbarNav' style={{ marginLeft: "auto" }}>
-                        <ul className="navbar-nav">
-                            <li className="nav-item">
-                                <Link className="navbar-brand" to="/">Home Page</Link>
+                    <div id='navbarNav' style={{ marginLeft: "auto", overflow: "hidden" }} >
+                        <ul className="navbar-nav d-flex flex-wrap" >
+                            <li className="nav-item" >
+                                <Link style={{fontSize: "2rem"}} className="navbar-brand" to="/">Home Page</Link>
                             </li>
                             <li className="nav-item">
-                                <Link onClick={log} className="navbar-brand">Generate Random Character</Link>
+                                <Link onClick={log} style={{fontSize: "2rem"}} className="navbar-brand">Generate Random Character</Link>
                             </li>
 
                             {Auth.loggedIn() ?
                                 (
                                     <>
                                         <li className="nav-item">
-                                            <Link className="navbar-brand" to="/campaigns">Campaign Library</Link>
+                                            <Link className="navbar-brand" style={{fontSize: "2rem"}} to="/campaigns">Campaign Library</Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link onClick={Auth.logout} className="navbar-brand" to="/">Logout</Link>
+                                            <Link onClick={Auth.logout} className="navbar-brand" style={{fontSize: "2rem"}} to="/">Logout</Link>
                                         </li>
                                     </>) :
                                 (<li className="nav-item ">
-                                    <Link className="navbar-brand" to="/login">Login</Link>
+                                    <Link className="navbar-brand" style={{fontSize: "2rem"}} to="/login">Login</Link>
                                 </li>)}
 
                         </ul>
                     </div>
                 </nav>
             </header>
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
+            <Modal style={{ "--bs-modal-bg": "#F2B644" }} show={show} onHide={handleClose}>
+                <Modal.Header style={{ "--bs-modal-header-border-color": "#140600" }} closeButton>
                     <Modal.Title>You Summoned</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -98,14 +98,14 @@ function Navbar() {
                     </div>
                     <h5 className="text-center mt-2">Desires</h5>
                     <ul className="list-group">
-                        {randomCharacter.desires.map(desire => <li className="list-group-item" key={desire}>{desire}</li>)}
+                        {randomCharacter.desires.map(desire => <li className="list-group-item" style={{backgroundColor: "#F2B644", borderColor: "#140600" }} key={desire}>{desire}</li>)}
                     </ul>
                     <h5 className="mt-2 text-center">Traits</h5>
                     <ul className="list-group">
-                        {randomCharacter.traits.map(trait => <li className="list-group-item" key={trait}>{trait}</li>)}
+                        {randomCharacter.traits.map(trait => <li className="list-group-item" style={{backgroundColor: "#F2B644", borderColor: "#140600" }} key={trait}>{trait}</li>)}
                     </ul>
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer style={{ "--bs-modal-footer-border-color": "#140600" }}>
                     <Button onClick={handleClose}>Close</Button>
                 </Modal.Footer>
             </Modal>

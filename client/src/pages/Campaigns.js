@@ -153,7 +153,7 @@ function Campaigns() {
                         <div className="d-flex flex-column align-items-center border border-dark rounded-pill w-50 my-2" style={styles.background} key={campaign._id}>
                             <h3>{campaign.name}</h3>
                             <section className="text-wrap fs-5 mx-5">{campaign.plot}</section>
-                            <div className="m-3 w-100 d-flex justify-content-center ">
+                            <div className="m-3 w-100 d-flex flex-wrap justify-content-center">
                                 <Button className="mx-2 rounded-pill" style={styles.button} onClick={() => {
                                     setStateCampaign({ name: campaign.name, plot: campaign.plot, _id: campaign._id });
                                     handleEdit();
@@ -162,7 +162,7 @@ function Campaigns() {
                                 <Button className="mx-2 rounded-pill" style={styles.button} onClick={() => {
                                     deleteCampaign(campaign._id);
                                 }}>Delete Campaign</Button>
-                                <Link to={`/campaign/${campaign._id}`}><Button className="mx-2 rounded-pill" style={styles.button}>View Campaign</Button></Link>
+                                <Link className="btn btn-block btn-info rounded-pill" style={styles.button} to={`/campaign/${campaign._id}`}>View Campaign</Link>
                             </div>
                         </div>
                     )
